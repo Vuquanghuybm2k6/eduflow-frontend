@@ -6,6 +6,7 @@ interface AuthState {
   accessToken: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  hasAttemptedRestore: boolean;
 
   login: (email: string, password: string) => Promise<void>;
   register: (data: {
@@ -17,25 +18,27 @@ interface AuthState {
   googleLogin: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
   loadUser: () => Promise<void>;
+  tryRestoreSession: () => Promise<boolean>;
   setAccessToken: (token: string | null) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  accessToken: localStorage.getItem('access_token'),
+  accessToken: null,
   isLoading: false,
-  isAuthenticated: !!localStorage.getItem('access_token'),
+  isAuthenticated: false,
+  hasAttemptedRestore: false,
 
   login: async (email, password) => {
     set({ isLoading: true });
     try {
       const data = await authApi.login({ email, password });
-      localStorage.setItem('access_token', data.accessToken);
       set({
         user: data.user,
         accessToken: data.accessToken,
         isAuthenticated: true,
         isLoading: false,
+        hasAttemptedRestore: true,
       });
     } catch (error) {
       set({ isLoading: false });
@@ -47,12 +50,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const res = await authApi.register(data);
-      localStorage.setItem('access_token', res.accessToken);
       set({
         user: res.user,
         accessToken: res.accessToken,
         isAuthenticated: true,
         isLoading: false,
+        hasAttemptedRestore: true,
       });
     } catch (error) {
       set({ isLoading: false });
@@ -64,12 +67,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const data = await authApi.googleLogin(idToken);
-      localStorage.setItem('access_token', data.accessToken);
       set({
         user: data.user,
         accessToken: data.accessToken,
         isAuthenticated: true,
         isLoading: false,
+        hasAttemptedRestore: true,
       });
     } catch (error) {
       set({ isLoading: false });
@@ -83,11 +86,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch {
       // ignore error
     } finally {
-      localStorage.removeItem('access_token');
       set({
         user: null,
         accessToken: null,
         isAuthenticated: false,
+        hasAttemptedRestore: true,
       });
     }
   },
@@ -98,7 +101,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authApi.getMe();
       set({ user, isAuthenticated: true, isLoading: false });
     } catch {
-      localStorage.removeItem('access_token');
       set({
         user: null,
         accessToken: null,
@@ -108,12 +110,35 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
+  tryRestoreSession: async () => {
+    set({ isLoading: true });
+    try {
+      const data = await authApi.refresh();
+      set({
+        user: data.user,
+        accessToken: data.accessToken,
+        isAuthenticated: true,
+        isLoading: false,
+        hasAttemptedRestore: true,
+      });
+      return true;
+    } catch {
+      set({
+        user: null,
+        accessToken: null,
+        isAuthenticated: false,
+        isLoading: false,
+        hasAttemptedRestore: true,
+      });
+      return false;
+    }
+  },
+
   setAccessToken: (token) => {
     if (token) {
-      localStorage.setItem('access_token', token);
+      set({ accessToken: token, isAuthenticated: true });
     } else {
-      localStorage.removeItem('access_token');
+      set({ accessToken: null, user: null, isAuthenticated: false });
     }
-    set({ accessToken: token, isAuthenticated: !!token });
   },
 }));

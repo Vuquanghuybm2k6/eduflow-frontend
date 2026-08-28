@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/auth.store';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
@@ -11,7 +12,7 @@ const api = axios.create({
 const SKIP_REFRESH_PATHS = ['/auth/logout', '/auth/refresh'];
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+  const token = useAuthStore.getState().accessToken;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -32,11 +33,11 @@ api.interceptors.response.use(
 
       try {
         const { data } = await api.post('/auth/refresh');
-        localStorage.setItem('access_token', data.accessToken);
+        useAuthStore.getState().setAccessToken(data.accessToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch {
-        localStorage.removeItem('access_token');
+        useAuthStore.getState().setAccessToken(null);
         window.location.href = '/login';
         return Promise.reject(error);
       }
