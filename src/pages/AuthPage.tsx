@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuthStore } from '../stores/auth.store';
 import '../App.css';
 
@@ -37,8 +38,25 @@ function AuthPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
-  const { login, register, isLoading } = useAuthStore();
+  const { login, register, googleLogin, isLoading } = useAuthStore();
   const isSignUp = mode === 'signup';
+
+  const handleGoogleSuccess = async (idToken?: string) => {
+    setError('');
+    setSuccess('');
+    if (!idToken) {
+      setError('Không nhận được thông tin xác thực từ Google.');
+      return;
+    }
+    try {
+      await googleLogin(idToken);
+      navigate('/');
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+      setError(Array.isArray(message) ? message[0] : message);
+    }
+  };
 
   const switchMode = (nextMode: FormMode) => {
     setMode(nextMode);
@@ -265,10 +283,34 @@ function AuthPage() {
           <div className="divider">
             <span>hoặc</span>
           </div>
-          <button className="google-button" type="button">
-            <GoogleIcon />
-            Tiếp tục với Google
-          </button>
+          <div className="google-oauth-button" aria-busy={isLoading}>
+            <button
+              className="google-button google-button-visual"
+              type="button"
+              tabIndex={-1}
+              aria-hidden="true"
+              disabled={isLoading}
+            >
+              <GoogleIcon />
+              Tiếp tục với Google
+            </button>
+            {!isLoading && (
+              <div className="google-oauth-trigger">
+                <GoogleLogin
+                  onSuccess={(response) =>
+                    handleGoogleSuccess(response.credential)
+                  }
+                  onError={() =>
+                    setError(
+                      'Đăng nhập Google không thành công. Vui lòng thử lại.',
+                    )
+                  }
+                  text="continue_with"
+                  width="390"
+                />
+              </div>
+            )}
+          </div>
           <p className="switch-copy">
             {isSignUp ? 'Đã có tài khoản?' : 'Chưa có tài khoản?'}{' '}
             <button

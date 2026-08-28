@@ -28,3 +28,7 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+.google-oauth-button { position: relative; height: 46px; }
+.google-button-visual { pointer-events: none; }
+.google-oauth-trigger { position: absolute; inset: 0; z-index: 1; opacity: 0; }
+.google-oauth-trigger > div, .google-oauth-trigger iframe { width: 100% !important; height: 46px !important; }
