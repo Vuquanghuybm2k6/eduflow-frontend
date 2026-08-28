@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // React router sẽ theo dõi URL của trình duyệt và hiển thị các component tương ứng dựa trên các route được định nghĩa trong ứng dụng.
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import OtpVerifyPage from './pages/OtpVerifyPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
@@ -10,6 +13,9 @@ function App() {
     <BrowserRouter> 
       <Routes>
         <Route path="/login" element={<AuthPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-otp" element={<OtpVerifyPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
           path="/"
           element={

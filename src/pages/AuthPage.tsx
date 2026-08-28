@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/auth.store';
 import '../App.css';
 
@@ -32,7 +32,7 @@ const EyeIcon = ({ open }: { open: boolean }) => (
 );
 
 function AuthPage() {
-  const [mode, setMode] = useState<FormMode>('signin'); // giá trị hiện tại, function thay đổi giá trị hiện tại
+  const [mode, setMode] = useState<FormMode>('signin');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -233,9 +233,9 @@ function AuthPage() {
             )}
 
             {!isSignUp && (
-              <a className="forgot-link" href="#forgot-password">
+              <Link className="forgot-link" to="/forgot-password">
                 Quên mật khẩu?
-              </a>
+              </Link>
             )}
 
             {error && (

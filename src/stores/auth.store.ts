@@ -1,6 +1,5 @@
-import { create } from 'zustand'; // là hàm của zustand để tạo ra một store
+import { create } from 'zustand';
 import { authApi, type User } from '../services/auth.service';
-import { setAccessToken, getAccessToken } from '../services/api';
 
 interface AuthState {
   user: User | null;
@@ -22,16 +21,16 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  accessToken: getAccessToken(),
+  accessToken: localStorage.getItem('access_token'),
   isLoading: false,
-  isAuthenticated: !!getAccessToken(),
+  isAuthenticated: !!localStorage.getItem('access_token'),
 
   login: async (email, password) => {
     set({ isLoading: true });
     try {
       const data = await authApi.login({ email, password });
-      setAccessToken(data.accessToken);
-      set({ // cập nhật zustand store với dữ liệu mới
+      localStorage.setItem('access_token', data.accessToken);
+      set({
         user: data.user,
         accessToken: data.accessToken,
         isAuthenticated: true,
@@ -47,7 +46,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const res = await authApi.register(data);
-      setAccessToken(res.accessToken);
+      localStorage.setItem('access_token', res.accessToken);
       set({
         user: res.user,
         accessToken: res.accessToken,
@@ -66,7 +65,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch {
       // ignore error
     } finally {
-      setAccessToken(null);
+      localStorage.removeItem('access_token');
       set({
         user: null,
         accessToken: null,
@@ -81,7 +80,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authApi.getMe();
       set({ user, isAuthenticated: true, isLoading: false });
     } catch {
-      setAccessToken(null);
+      localStorage.removeItem('access_token');
       set({
         user: null,
         accessToken: null,
@@ -92,7 +91,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   setAccessToken: (token) => {
-    setAccessToken(token);
+    if (token) {
+      localStorage.setItem('access_token', token);
+    } else {
+      localStorage.removeItem('access_token');
+    }
     set({ accessToken: token, isAuthenticated: !!token });
   },
 }));

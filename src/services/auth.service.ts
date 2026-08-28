@@ -45,4 +45,33 @@ export const authApi = {
     const res = await api.get<User>('/auth/me');
     return res.data;
   },
+
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const res = await api.post<{ message: string }>('/auth/forgot-password', {
+      email,
+    });
+    return res.data;
+  },
+
+  async verifyOtp(
+    email: string,
+    otp: string,
+  ): Promise<{ resetToken: string }> {
+    const res = await api.post<{ resetToken: string }>('/auth/verify-otp', {
+      email,
+      otp,
+    });
+    return res.data;
+  },
+
+  async resetPassword(
+    resetToken: string,
+    newPassword: string,
+  ): Promise<{ message: string }> {
+    const res = await api.post<{ message: string }>('/auth/reset-password', {
+      resetToken,
+      newPassword,
+    });
+    return res.data;
+  },
 };
