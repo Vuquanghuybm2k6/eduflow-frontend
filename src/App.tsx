@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 // BrowserRouter là component của react-router-dom để quản lý routing trong ứng dụng React, từ đó 
 // React router sẽ theo dõi URL của trình duyệt và hiển thị các component tương ứng dựa trên các route được định nghĩa trong ứng dụng.
 import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
+import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import OtpVerifyPage from './pages/OtpVerifyPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
@@ -17,14 +18,16 @@ function App() {
         <Route path="/verify-otp" element={<OtpVerifyPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
-              <HomePage />
+              <DashboardPage />
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );

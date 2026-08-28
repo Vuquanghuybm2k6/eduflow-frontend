@@ -50,7 +50,7 @@ function AuthPage() {
     }
     try {
       await googleLogin(idToken);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       const message =
         err.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
@@ -83,10 +83,10 @@ function AuthPage() {
     try {
       if (isSignUp) {
         await register({ email, password, fullName: name });
-        navigate('/');
+          navigate('/dashboard');
       } else {
         await login(email, password);
-        navigate('/');
+          navigate('/dashboard');
       }
     } catch (err: any) {
       const message =
