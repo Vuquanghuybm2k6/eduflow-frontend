@@ -8,15 +8,16 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import OtpVerifyPage from './pages/OtpVerifyPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { PublicOnlyRoute } from './components/PublicOnlyRoute';
 
 function App() {
   return (
     <BrowserRouter> 
       <Routes>
-        <Route path="/login" element={<AuthPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/verify-otp" element={<OtpVerifyPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/login" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+        <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPasswordPage /></PublicOnlyRoute>} />
+        <Route path="/verify-otp" element={<PublicOnlyRoute><OtpVerifyPage /></PublicOnlyRoute>} />
+        <Route path="/reset-password" element={<PublicOnlyRoute><ResetPasswordPage /></PublicOnlyRoute>} />
         <Route
           path="/dashboard"
           element={
