@@ -8,7 +8,12 @@ const navGroups = [
   { title: 'Academics', items: [['Classes', '▣'], ['Subjects', '◈'], ['Schedule', '◷'], ['Attendance', '✓'], ['Assessments', '⌁']] },
   { title: 'Finance', items: [['Invoices', '▤'], ['Payments', '◇']] },
   { title: 'System', items: [['Settings', '⚙']] },
+  { title: 'Organization', items: [['Branches', '⌂']] },
 ];
+
+const navRoutes: Record<string, string> = {
+  Branches: '/branches',
+};
 
 const stats = [
   { label: 'Tổng học viên', value: '1,284', change: '+8.2%', icon: '◎', tone: 'indigo' },
@@ -44,7 +49,15 @@ function DashboardPage() {
             <section key={group.title} className="nav-group">
               <p>{group.title}</p>
               {group.items.map(([label, icon]) => (
-                <button key={label} className={label === 'Dashboard' ? 'nav-item active' : 'nav-item'} type="button">
+                <button
+                  key={label}
+                  className={label === 'Dashboard' ? 'nav-item active' : 'nav-item'}
+                  type="button"
+                  onClick={() => {
+                    const route = navRoutes[label];
+                    if (route) navigate(route);
+                  }}
+                >
                   <span>{icon}</span>{label}
                 </button>
               ))}
