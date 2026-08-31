@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../stores/auth.store';
-import './DashboardPage.css';
+import { useAuthStore } from '../../stores/auth.store';
+import '../dashboard/DashboardPage.css';
 
 function ProfilePage() {
   const { user, logout } = useAuthStore();

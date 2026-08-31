@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { useAuthStore } from '../stores/auth.store';
-import '../App.css';
+import { useAuthStore } from '../../stores/auth.store';
+import '../../App.css';
 
 type FormMode = 'signin' | 'signup';
 

@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   branchApi,
   type Branch,
   type BranchStatus,
   type CreateBranchInput,
-} from '../services/branch.service';
-import { useAuthStore } from '../stores/auth.store';
-import './DashboardPage.css';
+} from '../../services/branch.service';
+import DashboardLayout from '../../layouts/DashboardLayout';
 import './BranchesPage.css';
 
 const emptyForm = {
@@ -26,23 +25,7 @@ type FormState = {
   status: BranchStatus;
 };
 
-const navGroups = [
-  { title: 'General', items: [['Dashboard', '▦']] },
-  { title: 'People', items: [['Students', '◎'], ['Teachers', '♙'], ['Parents', '♧']] },
-  { title: 'Academics', items: [['Classes', '▣'], ['Subjects', '◈'], ['Schedule', '◷'], ['Attendance', '✓'], ['Assessments', '⌁']] },
-  { title: 'Finance', items: [['Invoices', '▤'], ['Payments', '◇']] },
-  { title: 'System', items: [['Settings', '⚙']] },
-  { title: 'Organization', items: [['Branches', '⌂']] },
-];
-
-const navRoutes: Record<string, string> = {
-  Dashboard: '/dashboard',
-  Branches: '/branches',
-};
-
 function BranchesPage() {
-  const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
   const [searchParams] = useSearchParams();
   const organizationId = searchParams.get('organizationId') ?? undefined;
 
@@ -57,9 +40,6 @@ function BranchesPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [formError, setFormError] = useState<string | null>(null);
   const [query, setQuery] = useState('');
-
-  const name = user?.fullName ?? 'Người dùng';
-  const initials = name.trim().split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'U';
 
   const load = useCallback(async () => {
     try {
@@ -102,11 +82,6 @@ function BranchesPage() {
       active = false;
     };
   }, [organizationId]);
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
 
   const stats = useMemo(() => {
     const active = branches.filter((b) => b.status === 'active').length;
@@ -203,69 +178,32 @@ function BranchesPage() {
   };
 
   return (
-    <div className="dashboard-shell">
-      <aside className="dashboard-sidebar">
-        <div className="dashboard-logo"><span>E</span> EduFlow</div>
-        <button className="organization-switcher" type="button">EduFlow Academy <b>⌄</b></button>
-        <nav className="sidebar-nav" aria-label="Điều hướng chính">
-          {navGroups.map((group) => (
-            <section key={group.title} className="nav-group">
-              <p>{group.title}</p>
-              {group.items.map(([label, icon]) => (
-                <button
-                  key={label}
-                  className={label === 'Branches' ? 'nav-item active' : 'nav-item'}
-                  type="button"
-                  onClick={() => {
-                    const route = navRoutes[label];
-                    if (route) navigate(route);
-                  }}
-                >
-                  <span>{icon}</span>{label}
-                </button>
-              ))}
-            </section>
-          ))}
-        </nav>
-        <button className="sidebar-logout" type="button" onClick={handleLogout}>↪ Đăng xuất</button>
-      </aside>
-
-      <main className="dashboard-main">
-        <header className="dashboard-topbar">
-          <button className="mobile-menu" type="button" aria-label="Mở menu">☰</button>
-          <div className="topbar-search">⌕ <input placeholder="Tìm kiếm chi nhánh, học viên, lớp học..." aria-label="Tìm kiếm" /></div>
-          <div className="topbar-actions">
-            <button type="button" aria-label="Thông báo" className="topbar-bell">🔔<i></i></button>
-            <button className="topbar-user" type="button" onClick={() => navigate('/profile')} aria-label="Mở trang cá nhân">
-              <span className="topbar-avatar">{initials}</span>
-              <span className="topbar-user-name">{name}</span>
-              <b>▾</b>
-            </button>
+    <DashboardLayout
+      activeLabel="Branches"
+      searchPlaceholder="Tìm kiếm chi nhánh, học viên, lớp học..."
+    >
+      <div className="dashboard-content branches-content">
+        <div className="branches-heading">
+          <div>
+            <h1>Branches</h1>
+            <small>Manage and organize your organization&apos;s branches</small>
           </div>
-        </header>
+          <button className="branches-add" type="button" onClick={openCreate}>＋ Add Branch</button>
+        </div>
 
-        <div className="dashboard-content branches-content">
-          <div className="branches-heading">
-            <div>
-              <h1>Branches</h1>
-              <small>Manage and organize your organization&apos;s branches</small>
-            </div>
-            <button className="branches-add" type="button" onClick={openCreate}>＋ Add Branch</button>
+        {error && <div className="branches-error">{error}</div>}
+
+        <div className="branches-toolbar">
+          <div className="branches-search">
+            <span>🔍</span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search branches..."
+              aria-label="Tìm kiếm chi nhánh"
+            />
           </div>
-
-          {error && <div className="branches-error">{error}</div>}
-
-          <div className="branches-toolbar">
-            <div className="branches-search">
-              <span>🔍</span>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search branches..."
-                aria-label="Tìm kiếm chi nhánh"
-              />
-            </div>
-          </div>
+        </div>
 
           <section className="branches-stats">
             <article className="branches-stat">
@@ -374,7 +312,6 @@ function BranchesPage() {
             </div>
           </div>
         </div>
-      </main>
 
       {modalOpen && (
         <div className="branches-modal-backdrop" onClick={() => setModalOpen(false)}>
@@ -546,7 +483,7 @@ function BranchesPage() {
           </div>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   );
 }
 

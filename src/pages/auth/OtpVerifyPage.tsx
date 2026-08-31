@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { authApi } from '../services/auth.service';
-import '../App.css';
+import { authApi } from '../../services/auth.service';
+import '../../App.css';
 
 function OtpVerifyPage() {
   const location = useLocation();
