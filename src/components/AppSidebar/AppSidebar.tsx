@@ -4,7 +4,7 @@ import { useAuthStore } from '../../stores/auth.store';
 const navGroups = [
   { title: 'General', items: [['Dashboard', '▦']] },
   { title: 'People', items: [['Students', '◎'], ['Teachers', '♙'], ['Parents', '♧']] },
-  { title: 'Academics', items: [['Classes', '▣'], ['Subjects', '◈'], ['Schedule', '◷'], ['Attendance', '✓'], ['Assessments', '⌁']] },
+  { title: 'Academics', items: [['Classes', '▣'], ['Subjects', '◈'], ['Schedule', '◷'], ['Attendance', '✓'], ['Assessments', '⌁'], ['Academic Years', '◫']] },
   { title: 'Finance', items: [['Invoices', '▤'], ['Payments', '◇']] },
   { title: 'System', items: [['Settings', '⚙']] },
   { title: 'Organization', items: [['Branches', '⌂']] },
@@ -13,6 +13,7 @@ const navGroups = [
 const navRoutes: Record<string, string> = {
   Dashboard: '/dashboard',
   Branches: '/branches',
+  'Academic Years': '/academic-years',
 };
 
 interface AppSidebarProps {

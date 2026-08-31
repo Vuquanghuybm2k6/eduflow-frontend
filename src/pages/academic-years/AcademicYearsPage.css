@@ -1,0 +1,366 @@
+.acy-content {
+  max-width: 860px;
+}
+
+.acy-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.acy-heading h1 {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.8px;
+}
+
+.acy-heading small {
+  display: block;
+  margin-top: 6px;
+  color: var(--secondary);
+  font-size: 13px;
+}
+
+.acy-add {
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgb(79 70 229 / 20%);
+  white-space: nowrap;
+}
+
+.acy-add:hover {
+  background: var(--primary-hover);
+}
+
+.acy-error,
+.acy-form-error {
+  border-radius: 9px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.acy-form-error {
+  margin-bottom: 14px;
+}
+
+.acy-loading,
+.acy-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--secondary);
+  font-size: 14px;
+}
+
+.acy-empty {
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.acy-list {
+  display: grid;
+  gap: 14px;
+}
+
+.acy-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.04);
+}
+
+.acy-card:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 4px 14px rgb(79 70 229 / 0.08);
+}
+
+.acy-card-main h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 750;
+  color: var(--ink);
+}
+
+.acy-card-main h2:not(:only-child) {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.acy-status {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.acy-status.active {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.acy-status.completed {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.acy-status.inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.acy-range {
+  margin: 6px 0 12px;
+  color: var(--secondary);
+  font-size: 13px;
+}
+
+.acy-meta {
+  display: flex;
+  gap: 26px;
+}
+
+.acy-meta span {
+  color: var(--secondary);
+  font-size: 13px;
+}
+
+.acy-meta b {
+  color: var(--ink);
+  font-size: 15px;
+  margin-right: 4px;
+}
+
+.acy-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.action-link {
+  border: none;
+  background: none;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.action-link:hover {
+  background: #f3f4ff;
+  text-decoration: underline;
+}
+
+.action-link.danger {
+  color: #dc2626;
+}
+
+.action-link.danger:hover {
+  background: #fef2f2;
+}
+
+/* Modals */
+.acy-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(17 24 39 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+
+.acy-modal {
+  width: 100%;
+  max-width: 460px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 0.15);
+}
+
+.acy-modal h3 {
+  margin: 0 0 18px;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.acy-modal form label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.acy-modal form input[type='text'],
+.acy-modal form input[type='date'] {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ink);
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.acy-modal form input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 0.12);
+}
+
+.acy-status-field {
+  border: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+.acy-status-field legend {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.acy-radio {
+  display: flex !important;
+  align-items: center;
+  margin-bottom: 8px !important;
+  color: #334155 !important;
+}
+
+.acy-radio input {
+  margin: 0 8px 0 0;
+}
+
+.acy-confirm p {
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.acy-view-list {
+  margin: 0 0 6px;
+}
+
+.acy-view-list > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.acy-view-list > div:last-child {
+  border-bottom: none;
+}
+
+.acy-view-list dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.acy-view-list dd {
+  margin: 0;
+  color: #334155;
+  font-size: 14px;
+  text-align: right;
+  word-break: break-word;
+}
+
+.acy-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.acy-modal-actions button {
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.acy-modal-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+@media (max-width: 600px) {
+  .acy-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .acy-add {
+    width: 100%;
+  }
+
+  .acy-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .acy-card-actions {
+    width: 100%;
+  }
+}
