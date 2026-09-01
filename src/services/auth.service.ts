@@ -80,11 +80,6 @@ export const authApi = {
     return res.data;
   },
 
-  async refresh(): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/refresh');
-    return res.data;
-  },
-
   async logout(): Promise<void> {
     await api.post('/auth/logout');
   },

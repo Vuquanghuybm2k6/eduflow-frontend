@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { refreshSession } from '../services/api';
 import {
   authApi,
   type MembershipOption,
@@ -196,15 +197,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   tryRestoreSession: async () => {
     set({ isLoading: true });
     try {
-      const data = await authApi.refresh();
-      set({
-        user: data.user,
-        accessToken: data.accessToken,
-        organizationId: data.organizationId,
-        isAuthenticated: true,
-        isLoading: false,
-        hasAttemptedRestore: true,
-      });
+      await refreshSession();
+      set({ isLoading: false, hasAttemptedRestore: true });
       return true;
     } catch {
       set({

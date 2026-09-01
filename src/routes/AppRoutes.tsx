@@ -3,7 +3,7 @@ import AuthPage from '../pages/auth/AuthPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
 import BranchesPage from '../pages/branches/BranchesPage';
 import ProfilePage from '../pages/profile/ProfilePage';
-import AcademicYearsPage from '../pages/academic-years/AcademicYearsPage';
+import CoursesPage from '../pages/courses/CoursesPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import OtpVerifyPage from '../pages/auth/OtpVerifyPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
@@ -31,7 +31,7 @@ function AppRoutes() {
       />
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/branches" element={<ProtectedRoute><BranchesPage /></ProtectedRoute>} />
-      <Route path="/academic-years" element={<ProtectedRoute><AcademicYearsPage /></ProtectedRoute>} />
+      <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
