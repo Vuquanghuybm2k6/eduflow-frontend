@@ -9,10 +9,12 @@ interface AuthState {
   hasAttemptedRestore: boolean;
 
   login: (email: string, password: string) => Promise<void>;
-  register: (data: {
+  verifyRegistrationOtp: (data: {
     email: string;
+    otp: string;
     password: string;
     fullName: string;
+    organizationName: string;
     phone?: string;
   }) => Promise<void>;
   googleLogin: (idToken: string) => Promise<void>;
@@ -46,10 +48,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (data) => {
+  verifyRegistrationOtp: async (data) => {
     set({ isLoading: true });
     try {
-      const res = await authApi.register(data);
+      const res = await authApi.verifyRegistrationOtp(data);
       set({
         user: res.user,
         accessToken: res.accessToken,

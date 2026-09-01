@@ -17,13 +17,29 @@ export interface AuthResponse {
 }
 
 export const authApi = {
-  async register(data: {
+  async sendRegistrationOtp(data: {
     email: string;
     password: string;
     fullName: string;
+    organizationName: string;
+    phone?: string;
+  }): Promise<{ message: string }> {
+    const res = await api.post<{ message: string }>('/auth/register', data);
+    return res.data;
+  },
+
+  async verifyRegistrationOtp(data: {
+    email: string;
+    otp: string;
+    password: string;
+    fullName: string;
+    organizationName: string;
     phone?: string;
   }): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/register', data);
+    const res = await api.post<AuthResponse>(
+      '/auth/verify-registration-otp',
+      data,
+    );
     return res.data;
   },
 

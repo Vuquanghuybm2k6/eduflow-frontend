@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuthStore } from '../../stores/auth.store';
+import { authApi } from '../../services/auth.service';
 import '../../App.css';
 
 type FormMode = 'signin' | 'signup';
@@ -38,7 +39,7 @@ function AuthPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
-  const { login, register, googleLogin, isLoading } = useAuthStore();
+  const { login, googleLogin, isLoading } = useAuthStore();
   const isSignUp = mode === 'signup';
 
   const handleGoogleSuccess = async (idToken?: string) => {
@@ -74,19 +75,37 @@ function AuthPage() {
     const password = form.get('password') as string;
     const name = form.get('name') as string;
     const confirmPassword = form.get('confirmPassword') as string;
+    const organizationName = form.get('organizationName') as string;
 
     if (isSignUp && password !== confirmPassword) {
       setError('Mật khẩu xác nhận không khớp');
       return;
     }
 
+    if (isSignUp && !organizationName?.trim()) {
+      setError('Vui lòng nhập tên tổ chức.');
+      return;
+    }
+
     try {
       if (isSignUp) {
-        await register({ email, password, fullName: name });
-          navigate('/dashboard');
+        await authApi.sendRegistrationOtp({
+          email,
+          password,
+          fullName: name,
+          organizationName,
+        });
+        navigate('/register/verify-otp', {
+          state: {
+            email,
+            password,
+            fullName: name,
+            organizationName,
+          },
+        });
       } else {
         await login(email, password);
-          navigate('/dashboard');
+        navigate('/dashboard');
       }
     } catch (err: any) {
       const message =
@@ -197,6 +216,18 @@ function AuthPage() {
                   name="name"
                   autoComplete="name"
                   placeholder="Nguyễn Văn A"
+                />
+              </label>
+            )}
+
+            {isSignUp && (
+              <label>
+                Tên tổ chức
+                <input
+                  required
+                  name="organizationName"
+                  autoComplete="organization"
+                  placeholder="Ví dụ: Trường THPT XYZ"
                 />
               </label>
             )}
