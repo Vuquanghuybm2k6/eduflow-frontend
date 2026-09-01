@@ -12,8 +12,9 @@ const navGroups = [
 
 const navRoutes: Record<string, string> = {
   Dashboard: '/dashboard',
-  Branches: '/branches',
+  Classes: '/classes',
   Courses: '/courses',
+  Branches: '/branches',
 };
 
 interface AppSidebarProps {

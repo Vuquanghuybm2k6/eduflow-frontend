@@ -4,6 +4,7 @@ import DashboardPage from '../pages/dashboard/DashboardPage';
 import BranchesPage from '../pages/branches/BranchesPage';
 import ProfilePage from '../pages/profile/ProfilePage';
 import CoursesPage from '../pages/courses/CoursesPage';
+import ClassesPage from '../pages/classes/ClassesPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import OtpVerifyPage from '../pages/auth/OtpVerifyPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
@@ -32,6 +33,7 @@ function AppRoutes() {
       <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/branches" element={<ProtectedRoute><BranchesPage /></ProtectedRoute>} />
       <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+      <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
