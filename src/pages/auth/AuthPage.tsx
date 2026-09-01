@@ -51,10 +51,12 @@ function AuthPage() {
     }
     try {
       await googleLogin(idToken);
-      navigate('/dashboard');
-    } catch (err: any) {
+      const { pendingSelection } = useAuthStore.getState();
+      navigate(pendingSelection ? '/select-membership' : '/dashboard');
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string | string[] } } };
       const message =
-        err.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+        error.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
       setError(Array.isArray(message) ? message[0] : message);
     }
   };
@@ -105,11 +107,13 @@ function AuthPage() {
         });
       } else {
         await login(email, password);
-        navigate('/dashboard');
+        const { pendingSelection } = useAuthStore.getState();
+        navigate(pendingSelection ? '/select-membership' : '/dashboard');
       }
-    } catch (err: any) {
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string | string[] } } };
       const message =
-        err.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+        error.response?.data?.message || 'Đã có lỗi xảy ra. Vui lòng thử lại.';
       setError(Array.isArray(message) ? message[0] : message);
     }
   };

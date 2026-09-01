@@ -32,8 +32,15 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const { data } = await api.post('/auth/refresh');
-        useAuthStore.getState().setAccessToken(data.accessToken);
+        const { data } = await api.post<{
+          accessToken: string;
+          organizationId: string;
+        }>('/auth/refresh');
+        useAuthStore.setState({
+          accessToken: data.accessToken,
+          organizationId: data.organizationId,
+          isAuthenticated: true,
+        });
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch {

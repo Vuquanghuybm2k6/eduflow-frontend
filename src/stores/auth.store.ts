@@ -1,14 +1,26 @@
 import { create } from 'zustand';
-import { authApi, type User } from '../services/auth.service';
+import {
+  authApi,
+  type MembershipOption,
+  type User,
+} from '../services/auth.service';
+
+interface PendingSelection {
+  email: string;
+  password: string;
+  memberships: MembershipOption[];
+}
 
 interface AuthState {
   user: User | null;
   accessToken: string | null;
+  organizationId: string | null;
+  pendingSelection: PendingSelection | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   hasAttemptedRestore: boolean;
 
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<LoginOutcome>;
   verifyRegistrationOtp: (data: {
     email: string;
     otp: string;
@@ -17,16 +29,22 @@ interface AuthState {
     organizationName: string;
     phone?: string;
   }) => Promise<void>;
-  googleLogin: (idToken: string) => Promise<void>;
+  googleLogin: (idToken: string) => Promise<LoginOutcome>;
+  selectMembership: (membershipId: string) => Promise<void>;
+  cancelSelection: () => void;
   logout: () => Promise<void>;
   loadUser: () => Promise<void>;
   tryRestoreSession: () => Promise<boolean>;
   setAccessToken: (token: string | null) => void;
 }
 
+export type LoginOutcome = 'authenticated' | 'selection' | 'error';
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
+  organizationId: null,
+  pendingSelection: null,
   isLoading: false,
   isAuthenticated: false,
   hasAttemptedRestore: false,
@@ -35,13 +53,27 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const data = await authApi.login({ email, password });
+      if ('accessToken' in data) {
+        set({
+          user: data.user,
+          accessToken: data.accessToken,
+          organizationId: data.organizationId,
+          isAuthenticated: true,
+          isLoading: false,
+          hasAttemptedRestore: true,
+        });
+        return 'authenticated';
+      }
       set({
-        user: data.user,
-        accessToken: data.accessToken,
-        isAuthenticated: true,
+        pendingSelection: {
+          email,
+          password,
+          memberships: data.memberships,
+        },
         isLoading: false,
         hasAttemptedRestore: true,
       });
+      return 'selection';
     } catch (error) {
       set({ isLoading: false });
       throw error;
@@ -55,6 +87,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: res.user,
         accessToken: res.accessToken,
+        organizationId: res.organizationId,
         isAuthenticated: true,
         isLoading: false,
         hasAttemptedRestore: true,
@@ -69,9 +102,50 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const data = await authApi.googleLogin(idToken);
+      if ('accessToken' in data) {
+        set({
+          user: data.user,
+          accessToken: data.accessToken,
+          organizationId: data.organizationId,
+          isAuthenticated: true,
+          isLoading: false,
+          hasAttemptedRestore: true,
+        });
+        return 'authenticated';
+      }
+      set({
+        pendingSelection: {
+          email: data.user.email,
+          password: '',
+          memberships: data.memberships,
+        },
+        isLoading: false,
+        hasAttemptedRestore: true,
+      });
+      return 'selection';
+    } catch (error) {
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  selectMembership: async (membershipId) => {
+    const pending = useAuthStore.getState().pendingSelection;
+    if (!pending) {
+      throw new Error('No pending membership selection');
+    }
+    set({ isLoading: true });
+    try {
+      const data = await authApi.selectMembership({
+        email: pending.email,
+        password: pending.password,
+        membershipId,
+      });
       set({
         user: data.user,
         accessToken: data.accessToken,
+        organizationId: data.organizationId,
+        pendingSelection: null,
         isAuthenticated: true,
         isLoading: false,
         hasAttemptedRestore: true,
@@ -80,6 +154,10 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isLoading: false });
       throw error;
     }
+  },
+
+  cancelSelection: () => {
+    set({ pendingSelection: null, isLoading: false });
   },
 
   logout: async () => {
@@ -91,6 +169,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: null,
         accessToken: null,
+        organizationId: null,
+        pendingSelection: null,
         isAuthenticated: false,
         hasAttemptedRestore: true,
       });
@@ -106,6 +186,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: null,
         accessToken: null,
+        organizationId: null,
         isAuthenticated: false,
         isLoading: false,
       });
@@ -119,6 +200,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: data.user,
         accessToken: data.accessToken,
+        organizationId: data.organizationId,
         isAuthenticated: true,
         isLoading: false,
         hasAttemptedRestore: true,
@@ -128,6 +210,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({
         user: null,
         accessToken: null,
+        organizationId: null,
         isAuthenticated: false,
         isLoading: false,
         hasAttemptedRestore: true,
@@ -140,7 +223,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token) {
       set({ accessToken: token, isAuthenticated: true });
     } else {
-      set({ accessToken: null, user: null, isAuthenticated: false });
+      set({
+        accessToken: null,
+        user: null,
+        organizationId: null,
+        isAuthenticated: false,
+      });
     }
   },
 }));

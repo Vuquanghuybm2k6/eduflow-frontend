@@ -32,3 +32,20 @@
 .google-button-visual { pointer-events: none; }
 .google-oauth-trigger { position: absolute; inset: 0; z-index: 1; opacity: 0; }
 .google-oauth-trigger > div, .google-oauth-trigger iframe { width: 100% !important; height: 46px !important; }
+
+.org-list { list-style: none; margin: 8px 0 16px; padding: 0; display: grid; gap: 10px; }
+.org-option {
+  display: flex; width: 100%; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 10px;
+  background: #fff; color: inherit; font-size: 15px; text-align: left; cursor: pointer;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.org-option:hover:not(:disabled) { border-color: #4f46e5; box-shadow: 0 4px 12px rgb(79 70 229 / 10%); }
+.org-option:disabled { opacity: 0.6; cursor: not-allowed; }
+.org-option span { color: #64748b; font-size: 13px; }
+.cancel-link {
+  margin-top: 12px; padding: 0; border: 0; background: none; color: #4f46e5;
+  font-size: 14px; cursor: pointer; text-decoration: underline;
+}
+.cancel-link:disabled { opacity: 0.6; cursor: not-allowed; }
+

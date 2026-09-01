@@ -14,7 +14,22 @@ export interface User {
 export interface AuthResponse {
   user: User;
   accessToken: string;
+  organizationId: string;
 }
+
+export interface MembershipOption {
+  membershipId: string;
+  organizationId: string;
+  organizationName: string | null;
+  roleName: string | null;
+}
+
+export interface MembershipSelectionResponse {
+  user: User;
+  memberships: MembershipOption[];
+}
+
+export type LoginResponse = AuthResponse | MembershipSelectionResponse;
 
 export const authApi = {
   async sendRegistrationOtp(data: {
@@ -43,13 +58,25 @@ export const authApi = {
     return res.data;
   },
 
-  async login(data: { email: string; password: string }): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/login', data);
+  async login(data: {
+    email: string;
+    password: string;
+  }): Promise<LoginResponse> {
+    const res = await api.post<LoginResponse>('/auth/login', data);
     return res.data;
   },
 
-  async googleLogin(idToken: string): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/google', { idToken });
+  async googleLogin(idToken: string): Promise<LoginResponse> {
+    const res = await api.post<LoginResponse>('/auth/google', { idToken });
+    return res.data;
+  },
+
+  async selectMembership(data: {
+    email: string;
+    password: string;
+    membershipId: string;
+  }): Promise<AuthResponse> {
+    const res = await api.post<AuthResponse>('/auth/select-membership', data);
     return res.data;
   },
 

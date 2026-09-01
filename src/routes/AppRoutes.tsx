@@ -8,6 +8,7 @@ import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import OtpVerifyPage from '../pages/auth/OtpVerifyPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import RegisterOtpVerifyPage from '../pages/auth/RegisterOtpVerifyPage';
+import MembershipSelectionPage from '../pages/auth/MembershipSelectionPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicOnlyRoute } from './PublicOnlyRoute';
 
@@ -15,6 +16,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<PublicOnlyRoute><AuthPage /></PublicOnlyRoute>} />
+      <Route path="/select-membership" element={<PublicOnlyRoute><MembershipSelectionPage /></PublicOnlyRoute>} />
       <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPasswordPage /></PublicOnlyRoute>} />
       <Route path="/verify-otp" element={<PublicOnlyRoute><OtpVerifyPage /></PublicOnlyRoute>} />
       <Route path="/reset-password" element={<PublicOnlyRoute><ResetPasswordPage /></PublicOnlyRoute>} />
