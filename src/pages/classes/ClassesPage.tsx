@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   classApi,
   type ClassItem,
@@ -8,7 +8,7 @@ import {
 } from '../../services/class.service';
 import { branchApi, type Branch } from '../../services/branch.service';
 import { courseApi, type Course } from '../../services/course.service';
-import { usersApi, type User } from '../../services/users.service';
+import { teachersApi, type Teacher } from '../../services/teachers.service';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import './ClassesPage.css';
 
@@ -37,17 +37,17 @@ type FormState = typeof emptyForm;
 function ClassesPage() {
   const [searchParams] = useSearchParams();
   const organizationId = searchParams.get('organizationId') ?? undefined;
+  const navigate = useNavigate();
 
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [teachers, setTeachers] = useState<User[]>([]);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [viewingClass, setViewingClass] = useState<ClassItem | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [formError, setFormError] = useState<string | null>(null);
@@ -70,8 +70,8 @@ function ClassesPage() {
   }, [courses]);
 
   const teacherMap = useMemo(() => {
-    const m = new Map<string, User>();
-    teachers.forEach((u) => m.set(u.id, u));
+    const m = new Map<string, Teacher>();
+    teachers.forEach((t) => m.set(t.id, t));
     return m;
   }, [teachers]);
 
@@ -81,7 +81,7 @@ function ClassesPage() {
         classApi.findAll(organizationId),
         branchApi.findAll(organizationId),
         courseApi.findAll(organizationId),
-        usersApi.findAll(),
+        teachersApi.findAll(organizationId),
       ]);
       setClasses(c);
       setBranches(b);
@@ -242,10 +242,14 @@ function ClassesPage() {
     }
   };
 
+  const openView = (cls: ClassItem) => {
+    navigate(`/classes/${cls.id}${organizationId ? `?organizationId=${organizationId}` : ''}`);
+  };
+
   const getCourseName = (id: string) => courseMap.get(id)?.name ?? '—';
   const getBranchName = (id: string) => branchMap.get(id)?.name ?? '—';
   const getTeacherName = (id: string | null) =>
-    id ? (teacherMap.get(id)?.fullName ?? '—') : '—';
+    id ? (teacherMap.get(id)?.user?.fullName ?? '—') : '—';
 
   const statusClass = (s: ClassStatus) => `cls-status ${s.toLowerCase()}`;
 
@@ -350,7 +354,7 @@ function ClassesPage() {
                     <button
                       type="button"
                       className="action-link"
-                      onClick={() => setViewingClass(cls)}
+                      onClick={() => openView(cls)}
                     >
                       View
                     </button>
@@ -480,7 +484,7 @@ function ClassesPage() {
                 >
                   <option value="">Select teacher</option>
                   {teachers.map((t) => (
-                    <option key={t.id} value={t.id}>{t.fullName}</option>
+                    <option key={t.id} value={t.id}>{t.user?.fullName ?? t.teacherCode}</option>
                   ))}
                 </select>
               </label>
@@ -552,64 +556,6 @@ function ClassesPage() {
                 disabled={saving}
               >
                 {saving ? 'Cancelling...' : 'Yes, Cancel'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {viewingClass && (
-        <div
-          className="classes-modal-backdrop"
-          onClick={() => setViewingClass(null)}
-        >
-          <div
-            className="classes-modal classes-view"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="classes-modal-header">
-              <h3>Class Details</h3>
-              <button
-                type="button"
-                className="classes-modal-close"
-                onClick={() => setViewingClass(null)}
-              >
-                ✕
-              </button>
-            </div>
-            <dl className="classes-view-list">
-              <div><dt>Name</dt><dd>{viewingClass.name}</dd></div>
-              <div><dt>Code</dt><dd><span className="classes-code">{viewingClass.code}</span></dd></div>
-              <div><dt>Course</dt><dd>{getCourseName(viewingClass.courseId)}</dd></div>
-              <div><dt>Branch</dt><dd>{getBranchName(viewingClass.branchId)}</dd></div>
-              <div><dt>Teacher</dt><dd>{getTeacherName(viewingClass.teacherId)}</dd></div>
-              <div>
-                <dt>Start Date</dt>
-                <dd>{new Date(viewingClass.startDate).toLocaleDateString('vi-VN')}</dd>
-              </div>
-              <div>
-                <dt>End Date</dt>
-                <dd>{new Date(viewingClass.endDate).toLocaleDateString('vi-VN')}</dd>
-              </div>
-              <div><dt>Capacity</dt><dd>{viewingClass.capacity}</dd></div>
-              <div>
-                <dt>Status</dt>
-                <dd><span className={statusClass(viewingClass.status)}>{statusLabels[viewingClass.status]}</span></dd>
-              </div>
-              <div>
-                <dt>Created</dt>
-                <dd>{viewingClass.createdAt ? new Date(viewingClass.createdAt).toLocaleString('vi-VN') : '—'}</dd>
-              </div>
-            </dl>
-            <div className="classes-modal-actions">
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={() => setViewingClass(null)}
-              >
-                Close
               </button>
             </div>
           </div>

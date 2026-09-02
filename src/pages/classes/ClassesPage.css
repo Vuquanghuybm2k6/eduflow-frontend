@@ -1,5 +1,5 @@
 .classes-content {
-  max-width: 1100px;
+  max-width: none;
 }
 
 .classes-heading {
@@ -337,6 +337,186 @@
   font-size: 14px;
   text-align: right;
   word-break: break-word;
+}
+
+/* Enrollment (Add Student / Class students) */
+.classes-enroll-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0 10px;
+}
+
+.classes-enroll-head h4 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.classes-add-small {
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgb(79 70 229 / 20%);
+}
+
+.classes-add-small:hover {
+  background: var(--primary-hover);
+}
+
+.classes-enroll-loading,
+.classes-enroll-empty {
+  padding: 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  background: #fafafa;
+  border-radius: 9px;
+  border: 1px dashed var(--line);
+}
+
+.classes-enroll-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.classes-enroll-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.classes-enroll-list li:last-child {
+  border-bottom: none;
+}
+
+.classes-enroll-avatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.classes-enroll-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.classes-enroll-person {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.classes-enroll-person strong {
+  color: var(--ink);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.classes-enroll-person small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.classes-modal.classes-add-student {
+  max-width: 520px;
+}
+
+.classes-add-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 14px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--muted);
+}
+
+.classes-add-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  color: var(--ink);
+  font-size: 13px;
+  background: transparent;
+}
+
+.classes-add-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.classes-add-list li {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.classes-add-list li:last-child {
+  border-bottom: none;
+}
+
+.classes-add-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.classes-add-item:hover {
+  background: #fafaff;
+}
+
+.classes-add-item input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+.classes-add-item span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.classes-add-item span strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.classes-add-item span small {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .classes-modal form label {

@@ -30,7 +30,7 @@ export interface CreateClassInput {
   status?: ClassStatus;
 }
 
-export type UpdateClassInput = Partial<CreateClassInput>;
+export type UpdateClassInput = Partial<CreateClassInput> & { status?: ClassStatus };
 
 function params(organizationId?: string) {
   return organizationId ? { organizationId } : {};
@@ -74,6 +74,13 @@ export const classApi = {
 
   async remove(id: string, organizationId?: string): Promise<{ id: string }> {
     const res = await api.delete<{ id: string }>(`/classes/${id}`, {
+      params: params(organizationId),
+    });
+    return res.data;
+  },
+
+  async duplicate(id: string, organizationId?: string): Promise<ClassItem> {
+    const res = await api.post<ClassItem>(`/classes/${id}/duplicate`, null, {
       params: params(organizationId),
     });
     return res.data;
