@@ -12,6 +12,7 @@ const navGroups = [
 
 const navRoutes: Record<string, string> = {
   Dashboard: '/dashboard',
+  Students: '/students',
   Teachers: '/teachers',
   Classes: '/classes',
   Courses: '/courses',

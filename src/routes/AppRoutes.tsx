@@ -7,6 +7,8 @@ import CoursesPage from '../pages/courses/CoursesPage';
 import ClassesPage from '../pages/classes/ClassesPage';
 import TeachersPage from '../pages/teachers/TeachersPage';
 import TeacherDetailPage from '../pages/teachers/TeacherDetailPage';
+import StudentsPage from '../pages/students/StudentsPage';
+import StudentDetailPage from '../pages/students/StudentDetailPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import OtpVerifyPage from '../pages/auth/OtpVerifyPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
@@ -38,6 +40,8 @@ function AppRoutes() {
       <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
       <Route path="/teachers" element={<ProtectedRoute><TeachersPage /></ProtectedRoute>} />
       <Route path="/teachers/:id" element={<ProtectedRoute><TeacherDetailPage /></ProtectedRoute>} />
+      <Route path="/students" element={<ProtectedRoute><StudentsPage /></ProtectedRoute>} />
+      <Route path="/students/:id" element={<ProtectedRoute><StudentDetailPage /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

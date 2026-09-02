@@ -3,7 +3,8 @@ import api from './api';
 export interface User {
   id: string;
   email: string;
-  name: string;
+  fullName: string;
+  avatarUrl: string | null;
   phone: string | null;
   createdAt: string;
   updatedAt: string;

@@ -245,7 +245,7 @@ function ClassesPage() {
   const getCourseName = (id: string) => courseMap.get(id)?.name ?? '—';
   const getBranchName = (id: string) => branchMap.get(id)?.name ?? '—';
   const getTeacherName = (id: string | null) =>
-    id ? (teacherMap.get(id)?.name ?? '—') : '—';
+    id ? (teacherMap.get(id)?.fullName ?? '—') : '—';
 
   const statusClass = (s: ClassStatus) => `cls-status ${s.toLowerCase()}`;
 
@@ -480,7 +480,7 @@ function ClassesPage() {
                 >
                   <option value="">Select teacher</option>
                   {teachers.map((t) => (
-                    <option key={t.id} value={t.id}>{t.name}</option>
+                    <option key={t.id} value={t.id}>{t.fullName}</option>
                   ))}
                 </select>
               </label>

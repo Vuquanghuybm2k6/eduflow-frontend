@@ -43,9 +43,8 @@ function TeachersPage() {
   }>({ open: false, teacher: null });
   const [createdPassword, setCreatedPassword] = useState<string | null>(null);
   const [classesView, setClassesView] = useState<Teacher | null>(null);
-  const [toggling, setToggling] = useState<Teacher | null>(null);
   const [menuTeacherId, setMenuTeacherId] = useState<string | null>(null);
-  const [savingStatus, setSavingStatus] = useState(false);
+  const [savingStatusId, setSavingStatusId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -180,20 +179,16 @@ function TeachersPage() {
     void load();
   };
 
-  const handleToggleStatus = async () => {
-    if (!toggling) return;
-    const next: TeacherStatus =
-      toggling.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-    setSavingStatus(true);
+  const handleToggleStatus = async (t: Teacher) => {
+    const next: TeacherStatus = t.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    setSavingStatusId(t.id);
     try {
-      await teachersApi.updateStatus(toggling.id, next, organizationId);
-      setToggling(null);
+      await teachersApi.updateStatus(t.id, next, organizationId);
       await load();
     } catch {
       setError('Cập nhật trạng thái thất bại.');
-      setToggling(null);
     } finally {
-      setSavingStatus(false);
+      setSavingStatusId(null);
     }
   };
 
@@ -339,11 +334,19 @@ function TeachersPage() {
                     </span>
                   </td>
                   <td>
-                    <span
+                    <button
+                      type="button"
                       className={`teacher-status ${t.status.toLowerCase()}`}
+                      onClick={() => handleToggleStatus(t)}
+                      disabled={savingStatusId === t.id}
+                      title={`Click để chuyển sang ${
+                        t.status === 'ACTIVE' ? 'Inactive' : 'Active'
+                      }`}
                     >
-                      {statusLabels[t.status]}
-                    </span>
+                      {savingStatusId === t.id
+                        ? 'Saving...'
+                        : statusLabels[t.status]}
+                    </button>
                   </td>
                   <td className="teachers-actions">
                     <div className="teachers-menu-wrap">
@@ -389,16 +392,6 @@ function TeachersPage() {
                               }}
                             >
                               View classes
-                            </button>
-                            <button
-                              type="button"
-                              className="danger"
-                              onClick={() => {
-                                setMenuTeacherId(null);
-                                setToggling(t);
-                              }}
-                            >
-                              Change status
                             </button>
                           </div>
                         </>
@@ -513,48 +506,6 @@ function TeachersPage() {
                 onClick={() => setClassesView(null)}
               >
                 Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {toggling && (
-        <div
-          className="teachers-modal-backdrop"
-          onClick={() => setToggling(null)}
-        >
-          <div
-            className="teachers-modal teachers-confirm"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-          >
-            <h3>
-              {toggling.status === 'ACTIVE'
-                ? 'Deactivate Teacher'
-                : 'Activate Teacher'}
-            </h3>
-            <p>
-              {toggling.status === 'ACTIVE'
-                ? 'This teacher will no longer be assignable to new classes. Their existing classes are kept.'
-                : 'This teacher will be active again and assignable to classes.'}
-            </p>
-            <div className="teachers-modal-actions">
-              <button
-                type="button"
-                className="btn-ghost"
-                onClick={() => setToggling(null)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handleToggleStatus}
-                disabled={savingStatus}
-              >
-                {savingStatus ? 'Saving...' : 'Confirm'}
               </button>
             </div>
           </div>
