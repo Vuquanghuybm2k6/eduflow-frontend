@@ -16,9 +16,9 @@ import './ClassesPage.css';
 import './ClassDetailPage.css';
 
 const enrollmentStatusLabels: Record<EnrollmentStatus, string> = {
-  ACTIVE: 'Active',
-  COMPLETED: 'Completed',
-  CANCELLED: 'Cancelled',
+  ACTIVE: 'Hoạt động',
+  COMPLETED: 'Hoàn thành',
+  CANCELLED: 'Đã hủy',
 };
 
 function ClassDetailPage() {
@@ -55,6 +55,9 @@ function ClassDetailPage() {
   );
   const [students, setStudents] = useState<Student[]>([]);
   const [addingStudents, setAddingStudents] = useState(false);
+  const [teacherPickerOpen, setTeacherPickerOpen] = useState(false);
+  const [assigningTeacher, setAssigningTeacher] = useState(false);
+  const [teacherError, setTeacherError] = useState<string | null>(null);
 
   const branchMap = useMemo(() => {
     const m = new Map<string, Branch>();
@@ -201,6 +204,25 @@ function ClassDetailPage() {
     });
   };
 
+  const handleAssignTeacher = async (teacherId: string | null) => {
+    if (!id || !classItem) return;
+    setAssigningTeacher(true);
+    setTeacherError(null);
+    try {
+      const updated = await classApi.update(
+        id,
+        { teacherId: teacherId ?? null },
+        organizationId,
+      );
+      setClassItem(updated);
+      setTeacherPickerOpen(false);
+    } catch {
+      setTeacherError('Gán giáo viên cho lớp thất bại.');
+    } finally {
+      setAssigningTeacher(false);
+    }
+  };
+
   const handleAddStudents = async () => {
     if (!id) return;
     setAddingStudents(true);
@@ -228,12 +250,12 @@ function ClassDetailPage() {
           className="class-back"
           onClick={() => navigate('/classes')}
         >
-          ← Back to Classes
+          ← Quay lại danh sách lớp
         </button>
 
         {error && <div className="class-detail-error">{error}</div>}
         {loading && !classItem && !error && (
-          <div className="class-detail-loading">Loading...</div>
+          <div className="class-detail-loading">Đang tải...</div>
         )}
 
         {!loading && classItem && (
@@ -246,12 +268,12 @@ function ClassDetailPage() {
                     className={`class-hero-status ${classItem.status.toLowerCase()}`}
                   >
                     {classItem.status === 'UPCOMING'
-                      ? 'Upcoming'
+                      ? 'Sắp diễn ra'
                       : classItem.status === 'ACTIVE'
-                        ? 'Active'
+                        ? 'Đang hoạt động'
                         : classItem.status === 'COMPLETED'
-                          ? 'Completed'
-                          : 'Cancelled'}
+                          ? 'Hoàn thành'
+                          : 'Đã hủy'}
                   </span>
                 </div>
                 <p className="class-hero-sub">
@@ -265,9 +287,8 @@ function ClassDetailPage() {
                   className="class-edit-btn"
                   onClick={() => setDrawerOpen(true)}
                 >
-                  Edit Class
-                </button>
-                <ClassActionsMenu
+                  Chỉnh sửa lớp
+                </button>                <ClassActionsMenu
                   classItem={classItem}
                   organizationId={organizationId}
                   onAction={(action) => {
@@ -283,16 +304,32 @@ function ClassDetailPage() {
 
             <div className="class-meta">
               <div className="class-meta-card">
-                <span className="class-meta-label">Students</span>
+                <span className="class-meta-label">Học viên</span>
                 <strong className="class-meta-value">
                   {enrollmentsLoading ? '…' : `${classEnrollments.length} / ${classItem.capacity}`}
                 </strong>
                 <small className="class-meta-hint">
-                  {capacityPercent}% capacity
+                  {capacityPercent}% sức chứa
                 </small>
               </div>
-              <div className="class-meta-card">
-                <span className="class-meta-label">Teacher</span>
+              <button
+                type="button"
+                className="class-meta-card class-meta-link"
+                onClick={() => {
+                  if (classItem.teacherId) {
+                    navigate(
+                      `/teachers/${classItem.teacherId}${
+                        organizationId
+                          ? `?organizationId=${organizationId}`
+                          : ''
+                      }`,
+                    );
+                  } else {
+                    setTeacherPickerOpen(true);
+                  }
+                }}
+              >
+                <span className="class-meta-label">Giáo viên</span>
                 {classItem.teacherId ? (
                   <div className="class-teacher-cell">
                     <span className="class-student-avatar">
@@ -310,30 +347,43 @@ function ClassDetailPage() {
                         {teacherMap.get(classItem.teacherId)?.user?.fullName ?? '—'}
                       </strong>
                       <small className="class-teacher-role">
-                        IELTS Instructor
+                        Giảng viên
                       </small>
                     </div>
                   </div>
                 ) : (
-                  <strong className="class-meta-value">No teacher assigned</strong>
+                  <strong className="class-meta-value">Chưa có giáo viên</strong>
                 )}
-              </div>
-              <div className="class-meta-card">
-                <span className="class-meta-label">Schedule</span>
-                <strong className="class-meta-value">Mon · Wed · Fri</strong>
-                <small className="class-meta-hint">18:00 - 20:00</small>
-              </div>
+                <small className="class-meta-hint">
+                  {classItem.teacherId ? 'Xem hồ sơ →' : 'Gán giáo viên →'}
+                </small>
+              </button>
+              <button
+                type="button"
+                className="class-meta-card class-meta-link"
+                onClick={() =>
+                  navigate(
+                    `/classes/${id}/schedule${
+                      organizationId ? `?organizationId=${organizationId}` : ''
+                    }`,
+                  )
+                }
+              >
+                <span className="class-meta-label">Lịch học</span>
+                <strong className="class-meta-value">Xem lịch</strong>
+                <small className="class-meta-hint">Quản lý buổi học hằng tuần →</small>
+              </button>
             </div>
 
             <section className="class-students-panel">
               <div className="class-students-head">
-                <h2>Students</h2>
+                <h2>Học viên</h2>
                 <button
                   type="button"
                   className="classes-add-small"
                   onClick={openAddStudent}
                 >
-                  + Add Student
+                  + Thêm học viên
                 </button>
               </div>
 
@@ -343,7 +393,7 @@ function ClassDetailPage() {
                   <input
                     value={enrollQuery}
                     onChange={(e) => setEnrollQuery(e.target.value)}
-                    placeholder="Search student..."
+                    placeholder="Tìm kiếm học viên..."
                     aria-label="Tìm kiếm học viên"
                   />
                 </div>
@@ -353,29 +403,29 @@ function ClassDetailPage() {
                   onChange={(e) => setEnrollStatusFilter(e.target.value)}
                   aria-label="Lọc theo trạng thái"
                 >
-                  <option value="">Status</option>
-                  <option value="ACTIVE">Active</option>
-                  <option value="COMPLETED">Completed</option>
-                  <option value="CANCELLED">Cancelled</option>
+                  <option value="">Trạng thái</option>
+                  <option value="ACTIVE">Hoạt động</option>
+                  <option value="COMPLETED">Hoàn thành</option>
+                  <option value="CANCELLED">Đã hủy</option>
                 </select>
               </div>
 
               {enrollmentsLoading ? (
-                <div className="classes-enroll-loading">Loading students...</div>
+                <div className="classes-enroll-loading">Đang tải học viên...</div>
               ) : displayEnrollments.length === 0 ? (
                 <div className="classes-enroll-empty">
-                  No students enrolled yet.
+                  Chưa có học viên nào trong lớp.
                 </div>
               ) : (
                 <div className="class-table-wrap">
                   <table className="class-table">
                     <thead>
                       <tr>
-                        <th>Student</th>
-                        <th>Code</th>
-                        <th>Enrolled</th>
-                        <th>Status</th>
-                        <th className="class-table-action">Action</th>
+                        <th>Học viên</th>
+                        <th>Mã số</th>
+                        <th>Ngày tham gia</th>
+                        <th>Trạng thái</th>
+                        <th className="class-table-action">Thao tác</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -405,7 +455,7 @@ function ClassDetailPage() {
                               {e.enrolledAt
                                 ? new Date(e.enrolledAt).toLocaleDateString('en-GB', {
                                     day: '2-digit',
-                                    month: 'short',
+                                    month: '2-digit',
                                     year: 'numeric',
                                   })
                                 : '—'}
@@ -422,7 +472,7 @@ function ClassDetailPage() {
                             <button
                               type="button"
                               className="class-row-menu"
-                              aria-label="More actions"
+                              aria-label="Thêm thao tác"
                             >
                               ⋯
                             </button>
@@ -449,7 +499,7 @@ function ClassDetailPage() {
               aria-modal="true"
             >
               <div className="classes-modal-header">
-                <h3>Add Student to {classItem?.name}</h3>
+                <h3>Thêm học viên vào {classItem?.name}</h3>
                 <button
                   type="button"
                   className="classes-modal-close"
@@ -463,13 +513,13 @@ function ClassDetailPage() {
                 <input
                   value={addStudentQuery}
                   onChange={(e) => setAddStudentQuery(e.target.value)}
-                  placeholder="Search student by name or code..."
+                  placeholder="Tìm học viên theo tên hoặc mã..."
                   aria-label="Tìm kiếm học viên"
                 />
               </div>
               {availableStudents.length === 0 ? (
                 <div className="classes-enroll-empty">
-                  No available students to add.
+                  Không có học viên nào để thêm.
                 </div>
               ) : (
                 <ul className="classes-add-list">
@@ -503,7 +553,7 @@ function ClassDetailPage() {
                   className="btn-ghost"
                   onClick={() => setAddStudentOpen(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button
                   type="button"
@@ -512,9 +562,88 @@ function ClassDetailPage() {
                   disabled={addingStudents || selectedStudentIds.size === 0}
                 >
                   {addingStudents
-                    ? 'Adding...'
-                    : `Add ${selectedStudentIds.size || ''}`.trim()}
+                    ? 'Đang thêm...'
+                    : `Thêm ${selectedStudentIds.size || ''}`.trim()}
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {teacherPickerOpen && classItem && (
+          <div
+            className="classes-modal-backdrop"
+            onClick={() => setTeacherPickerOpen(false)}
+          >
+            <div
+              className="classes-modal classes-assign-teacher"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="classes-modal-header">
+                <h3>Gán giáo viên cho {classItem.name}</h3>
+                <button
+                  type="button"
+                  className="classes-modal-close"
+                  onClick={() => setTeacherPickerOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
+              {teacherError && (
+                <div className="classes-form-error">{teacherError}</div>
+              )}
+              {teachers.length === 0 ? (
+                <div className="classes-enroll-empty">
+                  Không có giáo viên nào.
+                </div>
+              ) : (
+                <ul className="classes-add-list">
+                  {teachers.map((t) => (
+                    <li key={t.id}>
+                      <label className="classes-add-item">
+                        <input
+                          type="radio"
+                          name="assignTeacher"
+                          checked={classItem.teacherId === t.id}
+                          onChange={() => handleAssignTeacher(t.id)}
+                          disabled={assigningTeacher}
+                        />
+                        <span className="class-student-avatar">
+                          {t.user?.avatarUrl ? (
+                            <img src={t.user.avatarUrl} alt="" />
+                          ) : (
+                            '👤'
+                          )}
+                        </span>
+                        <span>
+                          <strong>{t.user?.fullName ?? '—'}</strong>
+                          <small>{t.teacherCode}</small>
+                        </span>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="classes-modal-actions">
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  onClick={() => setTeacherPickerOpen(false)}
+                >
+                  Hủy
+                </button>
+                {classItem.teacherId && (
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => handleAssignTeacher(null)}
+                    disabled={assigningTeacher}
+                  >
+                    {assigningTeacher ? 'Đang gỡ...' : 'Gỡ giáo viên'}
+                  </button>
+                )}
               </div>
             </div>
           </div>

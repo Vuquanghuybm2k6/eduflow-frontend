@@ -6,6 +6,7 @@ import ProfilePage from '../pages/profile/ProfilePage';
 import CoursesPage from '../pages/courses/CoursesPage';
 import ClassesPage from '../pages/classes/ClassesPage';
 import ClassDetailPage from '../pages/classes/ClassDetailPage';
+import ClassSchedulePage from '../pages/classes/ClassSchedulePage';
 import TeachersPage from '../pages/teachers/TeachersPage';
 import TeacherDetailPage from '../pages/teachers/TeacherDetailPage';
 import StudentsPage from '../pages/students/StudentsPage';
@@ -40,6 +41,7 @@ function AppRoutes() {
       <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
       <Route path="/classes" element={<ProtectedRoute><ClassesPage /></ProtectedRoute>} />
       <Route path="/classes/:id" element={<ProtectedRoute><ClassDetailPage /></ProtectedRoute>} />
+      <Route path="/classes/:id/schedule" element={<ProtectedRoute><ClassSchedulePage /></ProtectedRoute>} />
       <Route path="/teachers" element={<ProtectedRoute><TeachersPage /></ProtectedRoute>} />
       <Route path="/teachers/:id" element={<ProtectedRoute><TeacherDetailPage /></ProtectedRoute>} />
       <Route path="/students" element={<ProtectedRoute><StudentsPage /></ProtectedRoute>} />

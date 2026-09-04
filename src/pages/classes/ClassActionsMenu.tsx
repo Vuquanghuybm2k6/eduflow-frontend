@@ -93,7 +93,7 @@ function ClassActionsMenu({
         <button
           type="button"
           className="class-kebab"
-          aria-label="More actions"
+          aria-label="Thêm thao tác"
           onClick={() => setOpen((v) => !v)}
         >
           •••
@@ -101,16 +101,16 @@ function ClassActionsMenu({
         {open && (
           <div className="class-actions-menu">
             <button type="button" onClick={() => { handleAction('duplicate'); }}>
-              Duplicate Class
+              Nhân bản lớp
             </button>
             {availableStatuses.includes('COMPLETED') && (
               <button type="button" onClick={() => { handleAction('archive'); }}>
-                Archive Class
+                Lưu trữ lớp
               </button>
             )}
             {availableStatuses.includes('CANCELLED') && (
               <button type="button" className="class-actions-danger" onClick={() => { handleAction('cancel'); }}>
-                Cancel Class
+                Hủy lớp
               </button>
             )}
             <div className="class-actions-divider" />
@@ -119,7 +119,7 @@ function ClassActionsMenu({
               className="class-actions-danger"
               onClick={() => { handleAction('delete'); }}
             >
-              Delete Class
+              Xóa lớp
             </button>
           </div>
         )}
@@ -138,33 +138,33 @@ function ClassActionsMenu({
           >
             <h3>
               {confirmAction === 'cancel'
-                ? 'Cancel this class?'
+                ? 'Hủy lớp này?'
                 : confirmAction === 'archive'
-                  ? 'Archive this class?'
-                  : 'Delete this class?'}
+                  ? 'Lưu trữ lớp này?'
+                  : 'Xóa lớp này?'}
             </h3>
             <p>
-              Are you sure you want to{' '}
+              Bạn có chắc muốn{' '}
               {confirmAction === 'cancel'
-                ? 'cancel'
+                ? 'hủy'
                 : confirmAction === 'archive'
-                  ? 'archive'
-                  : 'permanently delete'}{' '}
+                  ? 'lưu trữ'
+                  : 'xóa vĩnh viễn'}{' '}
               <strong>"{classItem.name}"</strong>?
             </p>
             {confirmAction === 'cancel' && (
               <p className="class-confirm-note">
-                This action will mark the class as cancelled.
+                Hành động này sẽ đánh dấu lớp là đã hủy.
               </p>
             )}
             {confirmAction === 'archive' && (
               <p className="class-confirm-note">
-                This action will mark the class as completed/archived.
+                Hành động này sẽ đánh dấu lớp là hoàn thành/lưu trữ.
               </p>
             )}
             {confirmAction === 'delete' && (
               <p className="class-confirm-note class-confirm-warn">
-                This action cannot be undone.
+                Hành động này không thể hoàn tác.
               </p>
             )}
             {error && <div className="drawer-error">{error}</div>}
@@ -174,7 +174,7 @@ function ClassActionsMenu({
                 className="drawer-btn drawer-btn-ghost"
                 onClick={() => { setConfirmAction(null); setError(null); }}
               >
-                {confirmAction === 'delete' ? 'Keep Class' : 'No, Go Back'}
+                {confirmAction === 'delete' ? 'Giữ lớp' : 'Không, quay lại'}
               </button>
               <button
                 type="button"
@@ -183,12 +183,12 @@ function ClassActionsMenu({
                 disabled={working}
               >
                 {working
-                  ? 'Processing...'
+                  ? 'Đang xử lý...'
                   : confirmAction === 'cancel'
-                    ? 'Yes, Cancel Class'
+                    ? 'Có, hủy lớp'
                     : confirmAction === 'archive'
-                      ? 'Yes, Archive'
-                      : 'Yes, Delete'}
+                      ? 'Có, lưu trữ'
+                      : 'Có, xóa'}
               </button>
             </div>
           </div>

@@ -187,6 +187,24 @@
   font-size: 13px;
 }
 
+.class-meta-link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 18px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.class-meta-link:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 12%);
+}
+
 .class-teacher-cell {
   display: flex;
   align-items: center;

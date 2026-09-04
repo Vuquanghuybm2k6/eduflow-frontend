@@ -108,7 +108,7 @@ function EditClassDrawer({
         aria-modal="true"
       >
         <div className="edit-class-header">
-          <h3>Edit Class</h3>
+          <h3>Chỉnh sửa lớp</h3>
           <button
             type="button"
             className="edit-class-close"
@@ -122,59 +122,59 @@ function EditClassDrawer({
 
         <form className="edit-class-form" onSubmit={handleSave}>
           <label>
-            Class name
+            Tên lớp
             <input
               value={form.name}
               onChange={(e) => updateField('name', e.target.value)}
-              placeholder="e.g. BE-K01"
+              placeholder="VD: BE-K01"
             />
           </label>
           <label>
-            Class code
+            Mã lớp
             <input
               value={form.code}
               onChange={(e) => updateField('code', e.target.value)}
-              placeholder="e.g. BE-01"
+              placeholder="VD: BE-01"
             />
           </label>
           <label>
-            Course
+            Khóa học
             <select
               value={form.courseId}
               onChange={(e) => updateField('courseId', e.target.value)}
             >
-              <option value="">Select course</option>
+              <option value="">Chọn khóa học</option>
               {courses.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
             </select>
           </label>
           <label>
-            Branch
+            Chi nhánh
             <select
               value={form.branchId}
               onChange={(e) => updateField('branchId', e.target.value)}
             >
-              <option value="">Select branch</option>
+              <option value="">Chọn chi nhánh</option>
               {branches.map((b) => (
                 <option key={b.id} value={b.id}>{b.name}</option>
               ))}
             </select>
           </label>
           <label>
-            Teacher
+            Giáo viên
             <select
               value={form.teacherId}
               onChange={(e) => updateField('teacherId', e.target.value)}
             >
-              <option value="">Select teacher</option>
+              <option value="">Chọn giáo viên</option>
               {teachers.map((t) => (
                 <option key={t.id} value={t.id}>{t.user?.fullName ?? t.teacherCode}</option>
               ))}
             </select>
           </label>
           <label>
-            Start date
+            Ngày bắt đầu
             <input
               type="date"
               value={form.startDate}
@@ -182,7 +182,7 @@ function EditClassDrawer({
             />
           </label>
           <label>
-            End date
+            Ngày kết thúc
             <input
               type="date"
               value={form.endDate}
@@ -190,7 +190,7 @@ function EditClassDrawer({
             />
           </label>
           <label>
-            Capacity
+            Sức chứa
             <input
               type="number"
               min={1}
@@ -205,10 +205,10 @@ function EditClassDrawer({
               className="btn-ghost"
               onClick={onClose}
             >
-              Cancel
+              Hủy
             </button>
             <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Saving...' : 'Update'}
+              {saving ? 'Đang lưu...' : 'Cập nhật'}
             </button>
           </div>
         </form>

@@ -497,7 +497,8 @@
   background: #fafaff;
 }
 
-.classes-add-item input[type='checkbox'] {
+.classes-add-item input[type='checkbox'],
+.classes-add-item input[type='radio'] {
   width: 16px;
   height: 16px;
   accent-color: var(--primary);
