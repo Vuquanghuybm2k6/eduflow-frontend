@@ -185,8 +185,11 @@ function TeachersPage() {
     try {
       await teachersApi.updateStatus(t.id, next, organizationId);
       await load();
-    } catch {
-      setError('Cập nhật trạng thái thất bại.');
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } }).response?.data
+          ?.message ?? 'Cập nhật trạng thái thất bại.';
+      setError(msg);
     } finally {
       setSavingStatusId(null);
     }
