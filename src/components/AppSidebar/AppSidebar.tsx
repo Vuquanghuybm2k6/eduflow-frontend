@@ -15,10 +15,10 @@ interface NavGroupData {
 
 const navGroups: NavGroupData[] = [
   {
-    title: 'GENERAL',
+    title: 'CHUNG',
     items: [
       {
-        label: 'Dashboard',
+        label: 'Bảng điều khiển',
         route: '/dashboard',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -32,10 +32,10 @@ const navGroups: NavGroupData[] = [
     ],
   },
   {
-    title: 'PEOPLE',
+    title: 'CON NGƯỜI',
     items: [
       {
-        label: 'Students',
+        label: 'Học viên',
         route: '/students',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -44,7 +44,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Teachers',
+        label: 'Giáo viên',
         route: '/teachers',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -54,7 +54,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Parents',
+        label: 'Phụ huynh',
         route: '/students',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -65,10 +65,10 @@ const navGroups: NavGroupData[] = [
     ],
   },
   {
-    title: 'ACADEMICS',
+    title: 'HỌC THUẬT',
     items: [
       {
-        label: 'Classes',
+        label: 'Lớp học',
         route: '/classes',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -77,7 +77,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Courses',
+        label: 'Khóa học',
         route: '/courses',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -86,7 +86,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Subjects',
+        label: 'Môn học',
         route: '/courses',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -95,7 +95,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Schedule',
+        label: 'Lịch học',
         route: '/classes',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -105,7 +105,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Attendance',
+        label: 'Điểm danh',
         route: '/dashboard',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -114,7 +114,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Assessments',
+        label: 'Đánh giá',
         route: '/dashboard',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -125,10 +125,10 @@ const navGroups: NavGroupData[] = [
     ],
   },
   {
-    title: 'FINANCE',
+    title: 'TÀI CHÍNH',
     items: [
       {
-        label: 'Invoices',
+        label: 'Hóa đơn',
         route: '/dashboard',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -137,7 +137,7 @@ const navGroups: NavGroupData[] = [
         ),
       },
       {
-        label: 'Payments',
+        label: 'Thanh toán',
         route: '/dashboard',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -149,10 +149,10 @@ const navGroups: NavGroupData[] = [
     ],
   },
   {
-    title: 'SYSTEM',
+    title: 'HỆ THỐNG',
     items: [
       {
-        label: 'Settings',
+        label: 'Cài đặt',
         route: '/profile',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -164,10 +164,10 @@ const navGroups: NavGroupData[] = [
     ],
   },
   {
-    title: 'ORGANIZATION',
+    title: 'TỔ CHỨC',
     items: [
       {
-        label: 'Branches',
+        label: 'Chi nhánh',
         route: '/branches',
         icon: (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

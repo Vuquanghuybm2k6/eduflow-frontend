@@ -98,34 +98,34 @@ function TeacherDetailPage() {
   };
 
   return (
-    <DashboardLayout activeLabel="Teachers">
+    <DashboardLayout       activeLabel="Giáo viên">
       <div className="dashboard-content teacher-detail-content">
         <button
           type="button"
           className="teacher-back"
           onClick={() => navigate('/teachers')}
         >
-          ← Back to Teachers
+          ← Quay lại danh sách giáo viên
         </button>
 
         {error && <div className="teacher-detail-error">{error}</div>}
         {loading && (!teacher || !error) && (
-          <div className="teacher-detail-loading">Loading...</div>
+          <div className="teacher-detail-loading">Đang tải...</div>
         )}
 
         {!loading && teacher && (
           <>
             <div className="teacher-heading">
               <div>
-                <h1>Teacher Profile</h1>
-                <small>View and manage teacher information</small>
+                <h1>Hồ sơ giáo viên</h1>
+                <small>Xem và quản lý thông tin giáo viên</small>
               </div>
               <button
                 type="button"
                 className="teacher-edit-btn"
                 onClick={() => setEditOpen(true)}
               >
-                Edit
+                Sửa
               </button>
             </div>
 
@@ -144,7 +144,7 @@ function TeacherDetailPage() {
                   <span
                     className={`teacher-status ${teacher.status.toLowerCase()}`}
                   >
-                    {teacher.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+                    {teacher.status === 'ACTIVE' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
                   </span>
                 </div>
               </div>
@@ -152,25 +152,25 @@ function TeacherDetailPage() {
 
             <div className="teacher-info-grid">
               <section className="teacher-info-card">
-                <h3>Personal Information</h3>
+                <h3>Thông tin cá nhân</h3>
                 <div className="teacher-info-row">
                   <span>Email</span>
                   <strong>{teacher.user?.email ?? '—'}</strong>
                 </div>
                 <div className="teacher-info-row">
-                  <span>Phone</span>
+                  <span>Điện thoại</span>
                   <strong>{teacher.user?.phone ?? '—'}</strong>
                 </div>
               </section>
 
               <section className="teacher-info-card">
-                <h3>Professional Information</h3>
+                <h3>Thông tin chuyên môn</h3>
                 <div className="teacher-info-row">
-                  <span>Specialization</span>
+                  <span>Chuyên môn</span>
                   <strong>{teacher.specialization ?? '—'}</strong>
                 </div>
                 <div className="teacher-info-row">
-                  <span>Branches</span>
+                  <span>Chi nhánh</span>
                   <strong>
                     {(teacher.branches ?? []).length > 0
                       ? teacher.branches!.map((b) => b.name).join(', ')
@@ -178,11 +178,11 @@ function TeacherDetailPage() {
                   </strong>
                 </div>
                 <div className="teacher-info-row">
-                  <span>Qualification</span>
+                  <span>Trình độ</span>
                   <strong>{teacher.qualification ?? '—'}</strong>
                 </div>
                 <div className="teacher-info-row">
-                  <span>Hire date</span>
+                  <span>Ngày tuyển dụng</span>
                   <strong>
                     {teacher.hireDate
                       ? new Date(teacher.hireDate).toLocaleDateString('en-GB')
@@ -191,7 +191,7 @@ function TeacherDetailPage() {
                 </div>
                 {teacher.bio && (
                   <div className="teacher-info-row">
-                    <span>Bio</span>
+                    <span>Giới thiệu</span>
                     <strong>{teacher.bio}</strong>
                   </div>
                 )}
@@ -200,13 +200,13 @@ function TeacherDetailPage() {
 
             <div className="teacher-classes">
               <div className="teacher-classes-head">
-                <h3>Classes taught</h3>
+                <h3>Lớp đang giảng dạy</h3>
                 <button
                   type="button"
                   className="teacher-view-all"
                   onClick={() => setViewingClasses(true)}
                 >
-                  View all classes
+                  Xem tất cả lớp
                 </button>
               </div>
 
@@ -214,17 +214,17 @@ function TeacherDetailPage() {
                 <table className="teacher-classes-table">
                   <thead>
                     <tr>
-                      <th>Class</th>
-                      <th>Course</th>
-                      <th>Students</th>
-                      <th>Status</th>
+                      <th>Lớp học</th>
+                      <th>Khóa học</th>
+                      <th>Sĩ số</th>
+                      <th>Trạng thái</th>
                     </tr>
                   </thead>
                   <tbody>
                     {taughtClasses.length === 0 ? (
                       <tr>
                         <td colSpan={4} className="teachers-empty">
-                          This teacher has no classes yet.
+                          Giáo viên chưa có lớp học nào.
                         </td>
                       </tr>
                     ) : (
@@ -270,7 +270,7 @@ function TeacherDetailPage() {
             >
               <div className="teachers-modal-header">
                 <h3>
-                  {teacher.user?.fullName ?? 'Teacher'} — Classes
+                  {teacher.user?.fullName ?? 'Giáo viên'} — Lớp học
                 </h3>
                 <button
                   type="button"
@@ -282,7 +282,7 @@ function TeacherDetailPage() {
               </div>
               {taughtClasses.length === 0 ? (
                 <div className="teachers-modal-empty">
-                  This teacher has no classes yet.
+                  Giáo viên chưa có lớp học nào.
                 </div>
               ) : (
                 <ul className="teachers-classes-list">
@@ -309,7 +309,7 @@ function TeacherDetailPage() {
                   className="btn-primary"
                   onClick={() => setViewingClasses(false)}
                 >
-                  Close
+                  Đóng
                 </button>
               </div>
             </div>

@@ -143,7 +143,7 @@ function TeacherFormModal({
         aria-modal="true"
       >
         <div className="teachers-modal-header">
-          <h3>{editingId ? 'Edit Teacher' : 'Add Teacher'}</h3>
+          <h3>{editingId ? 'Sửa giáo viên' : 'Thêm giáo viên'}</h3>
           <button type="button" className="teachers-modal-close" onClick={onClose}>
             ✕
           </button>
@@ -152,10 +152,10 @@ function TeacherFormModal({
         {formError && <div className="teachers-form-error">{formError}</div>}
 
         <form onSubmit={handleSubmit}>
-          <p className="teachers-form-section">Personal Information</p>
+          <p className="teachers-form-section">Thông tin cá nhân</p>
 
           <label>
-            Full name *
+            Họ và tên *
             <input
               value={form.fullName}
               onChange={(e) => updateField('fullName', e.target.value)}
@@ -173,7 +173,7 @@ function TeacherFormModal({
             />
           </label>
           <label>
-            Phone
+            Điện thoại
             <input
               value={form.phone}
               onChange={(e) => updateField('phone', e.target.value)}
@@ -181,10 +181,10 @@ function TeacherFormModal({
             />
           </label>
 
-          <p className="teachers-form-section">Professional Information</p>
+          <p className="teachers-form-section">Thông tin chuyên môn</p>
 
           <label>
-            Teacher code *
+            Mã giáo viên *
             <input
               value={form.teacherCode}
               onChange={(e) => updateField('teacherCode', e.target.value)}
@@ -192,11 +192,11 @@ function TeacherFormModal({
             />
           </label>
           <label>
-            Branches *
+            Chi nhánh *
             <div className="teachers-branch-box">
               {branches.length === 0 ? (
                 <span className="teachers-branch-empty">
-                  No branches available. Create a branch first.
+                  Chưa có chi nhánh. Vui lòng tạo chi nhánh trước.
                 </span>
               ) : (
                 branches.map((b) => (
@@ -213,7 +213,7 @@ function TeacherFormModal({
             </div>
           </label>
           <label>
-            Specialization
+            Chuyên môn
             <input
               value={form.specialization}
               onChange={(e) => updateField('specialization', e.target.value)}
@@ -221,7 +221,7 @@ function TeacherFormModal({
             />
           </label>
           <label>
-            Qualification
+            Trình độ
             <input
               value={form.qualification}
               onChange={(e) => updateField('qualification', e.target.value)}
@@ -229,7 +229,7 @@ function TeacherFormModal({
             />
           </label>
           <label>
-            Hire date
+            Ngày tuyển dụng
             <input
               type="date"
               value={form.hireDate}
@@ -237,21 +237,21 @@ function TeacherFormModal({
             />
           </label>
           <label>
-            Bio
+            Giới thiệu
             <textarea
               value={form.bio}
               onChange={(e) => updateField('bio', e.target.value)}
-              placeholder="Short introduction of the teacher..."
+              placeholder="Giới thiệu ngắn về giáo viên..."
               rows={3}
             />
           </label>
 
           <div className="teachers-modal-actions">
             <button type="button" className="btn-ghost" onClick={onClose}>
-              Cancel
+              Hủy
             </button>
             <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+              {saving ? 'Đang lưu...' : editingId ? 'Cập nhật' : 'Tạo mới'}
             </button>
           </div>
         </form>

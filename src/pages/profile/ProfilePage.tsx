@@ -26,7 +26,7 @@ function ProfilePage() {
     dob: '29/04/2006',
     email: user?.email || 'quanghuy@gmail.com',
     phone: user?.phone || '+84 123 456 789',
-    role: 'School Admin',
+    role: 'Quản trị viên',
     language: 'Tiếng Việt',
     address: 'Hà Nội, Việt Nam',
   });
@@ -344,9 +344,9 @@ function ProfilePage() {
                       value={formData.role}
                       onChange={handleInputChange}
                     >
-                      <option value="School Admin">School Admin</option>
-                      <option value="Teacher">Giảng viên</option>
-                      <option value="Student">Học viên</option>
+                      <option value="Quản trị viên">Quản trị viên</option>
+                      <option value="Giáo viên">Giáo viên</option>
+                      <option value="Học viên">Học viên</option>
                     </select>
                   </div>
 
@@ -407,7 +407,7 @@ function ProfilePage() {
 
                 <div className="account-info-row">
                   <span className="account-label">Vai trò</span>
-                  <span className="account-value">School Admin</span>
+                  <span className="account-value">Quản trị viên</span>
                 </div>
 
                 <div className="account-info-row">

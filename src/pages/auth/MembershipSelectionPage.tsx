@@ -45,7 +45,7 @@ function MembershipSelectionPage() {
         <a className="brand" href="/" aria-label="EduFlow home">
           <span className="brand-mark">E</span>EduFlow
         </a>
-        <p className="brand-footer">© 2026 EduFlow. Learn without limits.</p>
+        <p className="brand-footer">© 2026 EduFlow. Học không giới hạn.</p>
       </aside>
 
       <section className="form-panel">

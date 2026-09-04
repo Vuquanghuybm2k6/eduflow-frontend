@@ -28,8 +28,8 @@ type FormState = {
 };
 
 const statusLabels: Record<CourseStatus, string> = {
-  active: 'Active',
-  inactive: 'Inactive',
+  active: 'Đang hoạt động',
+  inactive: 'Ngừng hoạt động',
 };
 
 function CoursesPage() {
@@ -182,17 +182,17 @@ function CoursesPage() {
 
   return (
     <DashboardLayout
-      activeLabel="Courses"
-      searchPlaceholder="Tìm kiếm khóa học, học viên, lớp học..."
+      activeLabel="Khóa học"
+      searchPlaceholder="Tìm kiếm khóa học..."
     >
       <div className="dashboard-content crs-content">
         <div className="crs-heading">
           <div>
-            <h1>Courses</h1>
-            <small>Manage the courses of your organization</small>
+            <h1>Khóa học</h1>
+            <small>Quản lý các khóa học của tổ chức</small>
           </div>
           <button className="crs-add" type="button" onClick={openCreate}>
-            ＋ Create Course
+            ＋ Thêm khóa học
           </button>
         </div>
 
@@ -210,27 +210,27 @@ function CoursesPage() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search courses by name or code..."
+                placeholder="Tìm kiếm theo tên hoặc mã..."
               />
             </div>
 
             {filteredCourses.length === 0 ? (
               <div className="crs-empty">
                 {courses.length === 0
-                  ? 'No courses yet. Click "Create Course" to add one.'
-                  : 'No courses match your search.'}
+                  ? 'Chưa có khóa học nào. Nhấn "Thêm khóa học" để tạo.'
+                  : 'Không tìm thấy khóa học phù hợp.'}
               </div>
             ) : (
               <div className="crs-table-wrap">
                 <table className="crs-table">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Code</th>
-                      <th>Status</th>
-                      <th>Duration</th>
-                      <th>Tuition</th>
-                      <th className="crs-th-actions">Actions</th>
+                      <th>Tên</th>
+                      <th>Mã</th>
+                      <th>Trạng thái</th>
+                      <th>Thời lượng</th>
+                      <th>Học phí</th>
+                      <th className="crs-th-actions">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -239,7 +239,7 @@ function CoursesPage() {
                         <td className="crs-cell-name">
                           <span className="crs-row-name">{course.name}</span>
                           <span className="crs-row-desc">
-                            {course.description || 'No description.'}
+                            {course.description || 'Không có mô tả.'}
                           </span>
                         </td>
                         <td>
@@ -252,7 +252,7 @@ function CoursesPage() {
                         </td>
                         <td>
                           {course.duration != null
-                            ? `${course.duration} hrs`
+                            ? `${course.duration} giờ`
                             : '—'}
                         </td>
                         <td>
@@ -266,21 +266,21 @@ function CoursesPage() {
                             className="action-link"
                             onClick={() => setViewingCourse(course)}
                           >
-                            View
+                            Xem
                           </button>
                           <button
                             type="button"
                             className="action-link"
                             onClick={() => openEdit(course)}
                           >
-                            Edit
+                            Sửa
                           </button>
                           <button
                             type="button"
                             className="action-link danger"
                             onClick={() => setDeletingId(course.id)}
                           >
-                            Delete
+                            Xóa
                           </button>
                         </td>
                       </tr>
@@ -301,11 +301,11 @@ function CoursesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>{editingId ? 'Edit Course' : 'Create Course'}</h3>
+            <h3>{editingId ? 'Sửa khóa học' : 'Thêm khóa học'}</h3>
             {formError && <div className="crs-form-error">{formError}</div>}
             <form onSubmit={handleSubmit}>
               <label>
-                Name *
+                Tên *
                 <input
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
@@ -313,7 +313,7 @@ function CoursesPage() {
                 />
               </label>
               <label>
-                Code *
+                Mã *
                 <input
                   value={form.code}
                   onChange={(e) => updateField('code', e.target.value)}
@@ -321,7 +321,7 @@ function CoursesPage() {
                 />
               </label>
               <label>
-                Description
+                Mô tả
                 <textarea
                   value={form.description}
                   onChange={(e) => updateField('description', e.target.value)}
@@ -330,7 +330,7 @@ function CoursesPage() {
                 />
               </label>
               <label>
-                Duration (hours)
+                Thời lượng (giờ)
                 <input
                   type="number"
                   min={0}
@@ -340,7 +340,7 @@ function CoursesPage() {
                 />
               </label>
               <label>
-                Tuition Fee (VND)
+                Học phí (VND)
                 <input
                   type="number"
                   min={0}
@@ -350,7 +350,7 @@ function CoursesPage() {
                 />
               </label>
               <fieldset className="crs-field">
-                <legend>Status</legend>
+                <legend>Trạng thái</legend>
                 {(['active', 'inactive'] as CourseStatus[]).map((s) => (
                   <label key={s} className="crs-radio">
                     <input
@@ -370,14 +370,14 @@ function CoursesPage() {
                   className="btn-ghost"
                   onClick={() => setModalOpen(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button
                   type="submit"
                   className="btn-primary"
                   disabled={saving}
                 >
-                  {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+                  {saving ? 'Đang lưu...' : editingId ? 'Cập nhật' : 'Tạo mới'}
                 </button>
               </div>
             </form>
@@ -393,10 +393,9 @@ function CoursesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Delete Course</h3>
+            <h3>Xóa khóa học</h3>
             <p>
-              Are you sure you want to delete this course? This action cannot be
-              undone.
+              Bạn có chắc chắn muốn xóa khóa học này không? Hành động này không thể hoàn tác.
             </p>
             <div className="crs-modal-actions">
               <button
@@ -404,7 +403,7 @@ function CoursesPage() {
                 className="btn-ghost"
                 onClick={() => setDeletingId(null)}
               >
-                Cancel
+                Hủy
               </button>
               <button
                 type="button"
@@ -412,7 +411,7 @@ function CoursesPage() {
                 onClick={handleDelete}
                 disabled={saving}
               >
-                {saving ? 'Deleting...' : 'Delete'}
+                {saving ? 'Đang xóa...' : 'Xóa'}
               </button>
             </div>
           </div>
@@ -430,30 +429,30 @@ function CoursesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Course Details</h3>
+            <h3>Chi tiết khóa học</h3>
             <dl className="crs-view-list">
               <div>
-                <dt>Name</dt>
+                <dt>Tên</dt>
                 <dd>{viewingCourse.name}</dd>
               </div>
               <div>
-                <dt>Code</dt>
+                <dt>Mã</dt>
                 <dd>{viewingCourse.code}</dd>
               </div>
               <div>
-                <dt>Description</dt>
+                <dt>Mô tả</dt>
                 <dd>{viewingCourse.description || '—'}</dd>
               </div>
               <div>
-                <dt>Duration</dt>
+                <dt>Thời lượng</dt>
                 <dd>
                   {viewingCourse.duration != null
-                    ? `${viewingCourse.duration} hours`
+                    ? `${viewingCourse.duration} giờ`
                     : '—'}
                 </dd>
               </div>
               <div>
-                <dt>Tuition Fee</dt>
+                <dt>Học phí</dt>
                 <dd>
                   {viewingCourse.tuitionFee != null
                     ? Number(viewingCourse.tuitionFee).toLocaleString('vi-VN') +
@@ -462,7 +461,7 @@ function CoursesPage() {
                 </dd>
               </div>
               <div>
-                <dt>Status</dt>
+                <dt>Trạng thái</dt>
                 <dd>
                   <span className={`crs-status ${viewingCourse.status}`}>
                     ● {statusLabels[viewingCourse.status]}
@@ -470,7 +469,7 @@ function CoursesPage() {
                 </dd>
               </div>
               <div>
-                <dt>Created</dt>
+                <dt>Ngày tạo</dt>
                 <dd>
                   {viewingCourse.createdAt
                     ? new Date(viewingCourse.createdAt).toLocaleString('vi-VN')
@@ -484,7 +483,7 @@ function CoursesPage() {
                 className="btn-primary"
                 onClick={() => setViewingCourse(null)}
               >
-                Close
+                Đóng
               </button>
             </div>
           </div>

@@ -14,7 +14,7 @@ function AppHeader({
   const navigate = useNavigate();
 
   const name = user?.fullName ?? 'Huy Vũ Quang';
-  const role = 'School Admin';
+  const role = 'Quản trị viên';
 
   return (
     <header className="dashboard-topbar">

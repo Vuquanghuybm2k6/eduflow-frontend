@@ -13,14 +13,14 @@ import './StudentsPage.css';
 const PAGE_SIZE = 10;
 
 const statusLabels: Record<StudentStatus, string> = {
-  ACTIVE: 'Active',
-  INACTIVE: 'Inactive',
+  ACTIVE: 'Đang hoạt động',
+  INACTIVE: 'Ngừng hoạt động',
 };
 
 const genderLabels: Record<string, string> = {
-  MALE: 'Male',
-  FEMALE: 'Female',
-  OTHER: 'Other',
+  MALE: 'Nam',
+  FEMALE: 'Nữ',
+  OTHER: 'Khác',
 };
 
 function StudentsPage() {
@@ -149,17 +149,17 @@ function StudentsPage() {
 
   return (
     <DashboardLayout
-      activeLabel="Students"
-      searchPlaceholder="Tìm kiếm học viên, lớp học..."
+      activeLabel="Học viên"
+      searchPlaceholder="Tìm kiếm học viên..."
     >
       <div className="dashboard-content students-content">
         <div className="students-heading">
           <div>
-            <h1>Students</h1>
-            <small>Manage and organize students in your organization</small>
+            <h1>Học viên</h1>
+            <small>Quản lý và tổ chức học viên trong tổ chức</small>
           </div>
           <button className="students-add" type="button" onClick={openCreate}>
-            + Add Student
+            + Thêm học viên
           </button>
         </div>
 
@@ -171,7 +171,7 @@ function StudentsPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search students..."
+              placeholder="Tìm kiếm học viên..."
               aria-label="Tìm kiếm học viên"
             />
           </div>
@@ -183,7 +183,7 @@ function StudentsPage() {
             onChange={(e) => setFilterBranch(e.target.value)}
             className="students-filter"
           >
-            <option value="">Branch</option>
+            <option value="">Chi nhánh</option>
             {branches.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -195,37 +195,37 @@ function StudentsPage() {
             onChange={(e) => setFilterGender(e.target.value)}
             className="students-filter"
           >
-            <option value="">Gender</option>
-            <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
-            <option value="OTHER">Other</option>
+            <option value="">Giới tính</option>
+            <option value="MALE">Nam</option>
+            <option value="FEMALE">Nữ</option>
+            <option value="OTHER">Khác</option>
           </select>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="students-filter"
           >
-            <option value="">Status</option>
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
+            <option value="">Trạng thái</option>
+            <option value="ACTIVE">Đang hoạt động</option>
+            <option value="INACTIVE">Ngừng hoạt động</option>
           </select>
         </div>
 
         <div className="students-section-head">
-          <h2>Students</h2>
-          <span>{filtered.length} students</span>
+          <h2>Học viên</h2>
+          <span>{filtered.length} học viên</span>
         </div>
 
         <div className="students-panel">
           <table className="students-table">
             <thead>
               <tr>
-                <th>Student</th>
-                <th>Code</th>
-                <th>Branch</th>
-                <th>Gender</th>
-                <th>Status</th>
-                <th className="students-th-actions" aria-label="Actions" />
+                <th>Học viên</th>
+                <th>Mã</th>
+                <th>Chi nhánh</th>
+                <th>Giới tính</th>
+                <th>Trạng thái</th>
+                <th className="students-th-actions" aria-label="Thao tác" />
               </tr>
             </thead>
             <tbody>
@@ -233,8 +233,8 @@ function StudentsPage() {
                 <tr>
                   <td colSpan={6} className="students-empty">
                     {query || filterBranch || filterGender || filterStatus
-                      ? 'No students match your filters.'
-                      : 'No students yet. Click "Add Student" to create one.'}
+                      ? 'Không tìm thấy học viên phù hợp.'
+                      : 'Chưa có học viên nào. Nhấn "Thêm học viên" để tạo.'}
                   </td>
                 </tr>
               )}
@@ -282,12 +282,12 @@ function StudentsPage() {
                       className={`student-status ${s.status.toLowerCase()}`}
                       onClick={() => handleToggleStatus(s)}
                       disabled={savingStatusId === s.id}
-                      title={`Click để chuyển sang ${
-                        s.status === 'ACTIVE' ? 'Inactive' : 'Active'
+                      title={`Nhấn để chuyển sang ${
+                        s.status === 'ACTIVE' ? 'Ngừng hoạt động' : 'Đang hoạt động'
                       }`}
                     >
                       {savingStatusId === s.id
-                        ? 'Saving...'
+                        ? 'Đang lưu...'
                         : statusLabels[s.status]}
                     </button>
                   </td>
@@ -301,7 +301,7 @@ function StudentsPage() {
                             prev === s.id ? null : s.id,
                           )
                         }
-                        aria-label="Actions"
+                        aria-label="Thao tác"
                       >
                         ⋮
                       </button>
@@ -319,13 +319,13 @@ function StudentsPage() {
                                 navigate(`/students/${s.id}`);
                               }}
                             >
-                              View details
+                              Xem chi tiết
                             </button>
                             <button
                               type="button"
                               onClick={() => openEdit(s)}
                             >
-                              Edit student
+                              Sửa học viên
                             </button>
                           </div>
                         </>
@@ -340,8 +340,8 @@ function StudentsPage() {
           {filtered.length > PAGE_SIZE && (
             <div className="students-pagination">
               <span>
-                Showing {(safePage - 1) * PAGE_SIZE + 1}–
-                {Math.min(safePage * PAGE_SIZE, filtered.length)} of{' '}
+                Hiển thị {(safePage - 1) * PAGE_SIZE + 1}–
+                {Math.min(safePage * PAGE_SIZE, filtered.length)} trong{' '}
                 {filtered.length}
               </span>
               <div className="students-pagination-controls">
@@ -392,10 +392,10 @@ function StudentsPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Student Created</h3>
+            <h3>Đã tạo học viên</h3>
             <p>
-              Share this temporary password with the student. They can change
-              it after logging in.
+              Hãy chia sẻ mật khẩu tạm thời này với học viên. Họ có thể đổi
+              mật khẩu sau khi đăng nhập.
             </p>
             <div className="students-password-box">{createdPassword}</div>
             <div className="students-modal-actions">
@@ -404,7 +404,7 @@ function StudentsPage() {
                 className="btn-primary"
                 onClick={() => setCreatedPassword(null)}
               >
-                Done
+                Hoàn tất
               </button>
             </div>
           </div>

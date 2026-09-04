@@ -92,13 +92,13 @@ function RegisterOtpVerifyPage() {
         <div className="brand-copy">
           <p className="eyebrow">Xác nhận đăng ký</p>
           <h1>
-            Verify your
+            Xác minh
             <br />
             email.
           </h1>
           <p>Nhập mã OTP 6 chữ số đã được gửi đến email của bạn.</p>
         </div>
-        <p className="brand-footer">© 2026 EduFlow. Learn without limits.</p>
+        <p className="brand-footer">© 2026 EduFlow. Học không giới hạn.</p>
       </aside>
 
       <section className="form-panel">

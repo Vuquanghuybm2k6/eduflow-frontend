@@ -243,7 +243,7 @@ function ClassDetailPage() {
   };
 
   return (
-    <DashboardLayout activeLabel="Classes">
+    <DashboardLayout       activeLabel="Lớp học">
       <div className="dashboard-content class-detail-content">
         <button
           type="button"

@@ -57,13 +57,13 @@ function ResetPasswordPage() {
         <div className="brand-copy">
           <p className="eyebrow">Đặt lại mật khẩu</p>
           <h1>
-            Create a new
+            Tạo mật khẩu
             <br />
-            password.
+            mới.
           </h1>
           <p>Nhập mật khẩu mới cho tài khoản của bạn.</p>
         </div>
-        <p className="brand-footer">© 2026 EduFlow. Learn without limits.</p>
+        <p className="brand-footer">© 2026 EduFlow. Học không giới hạn.</p>
       </aside>
 
       <section className="form-panel">

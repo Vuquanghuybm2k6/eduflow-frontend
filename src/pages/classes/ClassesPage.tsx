@@ -15,10 +15,10 @@ import './ClassesPage.css';
 const PAGE_SIZE = 10;
 
 const statusLabels: Record<ClassStatus, string> = {
-  UPCOMING: 'Upcoming',
-  ACTIVE: 'Active',
-  COMPLETED: 'Completed',
-  CANCELLED: 'Cancelled',
+  UPCOMING: 'Sắp diễn ra',
+  ACTIVE: 'Đang hoạt động',
+  COMPLETED: 'Hoàn thành',
+  CANCELLED: 'Đã hủy',
 };
 
 const emptyForm = {
@@ -255,17 +255,17 @@ function ClassesPage() {
 
   return (
     <DashboardLayout
-      activeLabel="Classes"
+      activeLabel="Lớp học"
       searchPlaceholder="Tìm kiếm lớp học..."
     >
       <div className="dashboard-content classes-content">
         <div className="classes-heading">
           <div>
-            <h1>Classes</h1>
-            <small>Manage and organize your classes</small>
+            <h1>Lớp học</h1>
+            <small>Quản lý và tổ chức các lớp học</small>
           </div>
           <button className="classes-add" type="button" onClick={openCreate}>
-            + Create Class
+            + Thêm lớp học
           </button>
         </div>
 
@@ -277,7 +277,7 @@ function ClassesPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search classes..."
+              placeholder="Tìm kiếm lớp học..."
               aria-label="Tìm kiếm lớp học"
             />
           </div>
@@ -285,7 +285,7 @@ function ClassesPage() {
             value={filterBranch}
             onChange={(e) => setFilterBranch(e.target.value)}
           >
-            <option value="">All Branches</option>
+            <option value="">Tất cả chi nhánh</option>
             {branches.map((b) => (
               <option key={b.id} value={b.id}>{b.name}</option>
             ))}
@@ -294,7 +294,7 @@ function ClassesPage() {
             value={filterCourse}
             onChange={(e) => setFilterCourse(e.target.value)}
           >
-            <option value="">All Courses</option>
+            <option value="">Tất cả khóa học</option>
             {courses.map((c) => (
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
@@ -303,7 +303,7 @@ function ClassesPage() {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <option value="">All Statuses</option>
+            <option value="">Tất cả trạng thái</option>
             {Object.entries(statusLabels).map(([v, l]) => (
               <option key={v} value={v}>{l}</option>
             ))}
@@ -314,13 +314,13 @@ function ClassesPage() {
           <table className="classes-table">
             <thead>
               <tr>
-                <th>Class</th>
-                <th>Course</th>
-                <th>Branch</th>
-                <th>Teacher</th>
-                <th>Students</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>Lớp học</th>
+                <th>Khóa học</th>
+                <th>Chi nhánh</th>
+                <th>Giáo viên</th>
+                <th>Sĩ số</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
@@ -328,8 +328,8 @@ function ClassesPage() {
                 <tr>
                   <td colSpan={7} className="classes-empty">
                     {query || filterBranch || filterCourse || filterStatus
-                      ? 'No classes match your filters.'
-                      : 'No classes yet. Click "Create Class" to add one.'}
+                      ? 'Không tìm thấy lớp học phù hợp.'
+                      : 'Chưa có lớp học nào. Nhấn "Thêm lớp học" để tạo.'}
                   </td>
                 </tr>
               )}
@@ -356,21 +356,21 @@ function ClassesPage() {
                       className="action-link"
                       onClick={() => openView(cls)}
                     >
-                      View
+                      Xem
                     </button>
                     <button
                       type="button"
                       className="action-link"
                       onClick={() => openEdit(cls)}
                     >
-                      Edit
+                      Sửa
                     </button>
                     <button
                       type="button"
                       className="action-link danger"
                       onClick={() => setDeletingId(cls.id)}
                     >
-                      Cancel
+                      Hủy
                     </button>
                   </td>
                 </tr>
@@ -381,8 +381,8 @@ function ClassesPage() {
           {filtered.length > PAGE_SIZE && (
             <div className="classes-pagination">
               <span>
-                Showing {(safePage - 1) * PAGE_SIZE + 1}–
-                {Math.min(safePage * PAGE_SIZE, filtered.length)} of{' '}
+                Hiển thị {(safePage - 1) * PAGE_SIZE + 1}–
+                {Math.min(safePage * PAGE_SIZE, filtered.length)} trong{' '}
                 {filtered.length}
               </span>
               <div className="classes-pagination-controls">
@@ -425,7 +425,7 @@ function ClassesPage() {
             aria-modal="true"
           >
             <div className="classes-modal-header">
-              <h3>{editingId ? 'Edit Class' : 'Create Class'}</h3>
+              <h3>{editingId ? 'Sửa lớp học' : 'Thêm lớp học'}</h3>
               <button
                 type="button"
                 className="classes-modal-close"
@@ -437,7 +437,7 @@ function ClassesPage() {
             {formError && <div className="classes-form-error">{formError}</div>}
             <form onSubmit={handleSubmit}>
               <label>
-                Class name
+                Tên lớp
                 <input
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
@@ -445,7 +445,7 @@ function ClassesPage() {
                 />
               </label>
               <label>
-                Class code
+                Mã lớp
                 <input
                   value={form.code}
                   onChange={(e) => updateField('code', e.target.value)}
@@ -453,43 +453,43 @@ function ClassesPage() {
                 />
               </label>
               <label>
-                Course
+                Khóa học
                 <select
                   value={form.courseId}
                   onChange={(e) => updateField('courseId', e.target.value)}
                 >
-                  <option value="">Select course</option>
+                  <option value="">Chọn khóa học</option>
                   {courses.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
                 </select>
               </label>
               <label>
-                Branch
+                Chi nhánh
                 <select
                   value={form.branchId}
                   onChange={(e) => updateField('branchId', e.target.value)}
                 >
-                  <option value="">Select branch</option>
+                  <option value="">Chọn chi nhánh</option>
                   {branches.map((b) => (
                     <option key={b.id} value={b.id}>{b.name}</option>
                   ))}
                 </select>
               </label>
               <label>
-                Teacher
+                Giáo viên
                 <select
                   value={form.teacherId}
                   onChange={(e) => updateField('teacherId', e.target.value)}
                 >
-                  <option value="">Select teacher</option>
+                  <option value="">Chọn giáo viên</option>
                   {teachers.map((t) => (
                     <option key={t.id} value={t.id}>{t.user?.fullName ?? t.teacherCode}</option>
                   ))}
                 </select>
               </label>
               <label>
-                Start date
+                Ngày bắt đầu
                 <input
                   type="date"
                   value={form.startDate}
@@ -497,7 +497,7 @@ function ClassesPage() {
                 />
               </label>
               <label>
-                End date
+                Ngày kết thúc
                 <input
                   type="date"
                   value={form.endDate}
@@ -505,7 +505,7 @@ function ClassesPage() {
                 />
               </label>
               <label>
-                Capacity
+                Sức chứa
                 <input
                   type="number"
                   min={1}
@@ -520,10 +520,10 @@ function ClassesPage() {
                   className="btn-ghost"
                   onClick={() => setModalOpen(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+                  {saving ? 'Đang lưu...' : editingId ? 'Cập nhật' : 'Tạo mới'}
                 </button>
               </div>
             </form>
@@ -539,15 +539,15 @@ function ClassesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Cancel Class</h3>
-            <p>Are you sure you want to cancel this class? This will mark it as cancelled.</p>
+            <h3>Hủy lớp học</h3>
+            <p>Bạn có chắc chắn muốn hủy lớp học này không? Lớp sẽ được đánh dấu là đã hủy.</p>
             <div className="classes-modal-actions">
               <button
                 type="button"
                 className="btn-ghost"
                 onClick={() => setDeletingId(null)}
               >
-                No
+                Không
               </button>
               <button
                 type="button"
@@ -555,7 +555,7 @@ function ClassesPage() {
                 onClick={handleDelete}
                 disabled={saving}
               >
-                {saving ? 'Cancelling...' : 'Yes, Cancel'}
+                {saving ? 'Đang hủy...' : 'Có, hủy lớp'}
               </button>
             </div>
           </div>

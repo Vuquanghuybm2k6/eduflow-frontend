@@ -127,9 +127,9 @@ function AuthPage() {
         <div className="brand-copy">
           <p className="eyebrow">Nền tảng quản lý giáo dục</p>
           <h1>
-            Manage education
+            Quản lý giáo dục
             <br />
-            smarter, together.
+            thông minh hơn, cùng nhau.
           </h1>
           <p>
             Đơn giản hoá công việc hằng ngày để mọi người có thêm thời gian
@@ -174,7 +174,7 @@ function AuthPage() {
             </div>
           </div>
         </div>
-        <p className="brand-footer">© 2026 EduFlow. Learn without limits.</p>
+        <p className="brand-footer">© 2026 EduFlow. Học không giới hạn.</p>
       </aside>
 
       <section className="form-panel">
@@ -202,7 +202,7 @@ function AuthPage() {
 
           <header className="form-heading">
             <h2>
-              {isSignUp ? 'Tạo tài khoản của bạn' : 'Welcome back 👋'}
+              {isSignUp ? 'Tạo tài khoản của bạn' : 'Chào mừng trở lại 👋'}
             </h2>
             <p>
               {isSignUp

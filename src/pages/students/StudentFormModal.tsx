@@ -138,7 +138,7 @@ function StudentFormModal({
         aria-modal="true"
       >
         <div className="students-modal-header">
-          <h3>{editingId ? 'Edit Student' : 'Add Student'}</h3>
+          <h3>{editingId ? 'Sửa học viên' : 'Thêm học viên'}</h3>
           <button type="button" className="students-modal-close" onClick={onClose}>
             ✕
           </button>
@@ -147,10 +147,10 @@ function StudentFormModal({
         {formError && <div className="students-form-error">{formError}</div>}
 
         <form onSubmit={handleSubmit}>
-          <p className="students-form-section">Personal Information</p>
+          <p className="students-form-section">Thông tin cá nhân</p>
 
           <label>
-            Full name *
+            Họ và tên *
             <input
               value={form.fullName}
               onChange={(e) => updateField('fullName', e.target.value)}
@@ -168,7 +168,7 @@ function StudentFormModal({
             />
           </label>
           <label>
-            Phone
+            Điện thoại
             <input
               value={form.phone}
               onChange={(e) => updateField('phone', e.target.value)}
@@ -176,7 +176,7 @@ function StudentFormModal({
             />
           </label>
           <label>
-            Date of Birth
+            Ngày sinh
             <input
               type="date"
               value={form.dateOfBirth}
@@ -184,22 +184,22 @@ function StudentFormModal({
             />
           </label>
           <label>
-            Gender
+            Giới tính
             <select
               value={form.gender}
               onChange={(e) => updateField('gender', e.target.value)}
             >
-              <option value="">Select gender</option>
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="OTHER">Other</option>
+              <option value="">Chọn giới tính</option>
+              <option value="MALE">Nam</option>
+              <option value="FEMALE">Nữ</option>
+              <option value="OTHER">Khác</option>
             </select>
           </label>
 
-          <p className="students-form-section">Student Information</p>
+          <p className="students-form-section">Thông tin học viên</p>
 
           <label>
-            Student code *
+            Mã học viên *
             <input
               value={form.studentCode}
               onChange={(e) => updateField('studentCode', e.target.value)}
@@ -207,11 +207,11 @@ function StudentFormModal({
             />
           </label>
           <label>
-            Branches *
+            Chi nhánh *
             <div className="students-branch-box">
               {branches.length === 0 ? (
                 <span className="students-branch-empty">
-                  No branches available. Create a branch first.
+                  Chưa có chi nhánh. Vui lòng tạo chi nhánh trước.
                 </span>
               ) : (
                 branches.map((b) => (
@@ -228,21 +228,21 @@ function StudentFormModal({
             </div>
           </label>
           <label>
-            Address
+            Địa chỉ
             <textarea
               value={form.address}
               onChange={(e) => updateField('address', e.target.value)}
-              placeholder="Student address..."
+              placeholder="Địa chỉ học viên..."
               rows={2}
             />
           </label>
 
           <div className="students-modal-actions">
             <button type="button" className="btn-ghost" onClick={onClose}>
-              Cancel
+              Hủy
             </button>
             <button type="submit" className="btn-primary" disabled={saving}>
-              {saving ? 'Saving...' : editingId ? 'Update' : 'Create Student'}
+              {saving ? 'Đang lưu...' : editingId ? 'Cập nhật' : 'Tạo học viên'}
             </button>
           </div>
         </form>

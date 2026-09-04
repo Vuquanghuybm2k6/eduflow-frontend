@@ -179,16 +179,16 @@ function BranchesPage() {
 
   return (
     <DashboardLayout
-      activeLabel="Branches"
-      searchPlaceholder="Tìm kiếm chi nhánh, học viên, lớp học..."
+      activeLabel="Chi nhánh"
+      searchPlaceholder="Tìm kiếm chi nhánh..."
     >
       <div className="dashboard-content branches-content">
         <div className="branches-heading">
           <div>
-            <h1>Branches</h1>
-            <small>Manage and organize your organization&apos;s branches</small>
+            <h1>Chi nhánh</h1>
+            <small>Quản lý và tổ chức các chi nhánh</small>
           </div>
-          <button className="branches-add" type="button" onClick={openCreate}>＋ Add Branch</button>
+          <button className="branches-add" type="button" onClick={openCreate}>＋ Thêm chi nhánh</button>
         </div>
 
         {error && <div className="branches-error">{error}</div>}
@@ -199,7 +199,7 @@ function BranchesPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search branches..."
+              placeholder="Tìm kiếm chi nhánh..."
               aria-label="Tìm kiếm chi nhánh"
             />
           </div>
@@ -209,21 +209,21 @@ function BranchesPage() {
             <article className="branches-stat">
               <div className="branches-stat-icon total">∑</div>
               <div>
-                <p>Total Branches</p>
+                <p>Tổng số chi nhánh</p>
                 <strong>{stats.total}</strong>
               </div>
             </article>
             <article className="branches-stat">
               <div className="branches-stat-icon active">✓</div>
               <div>
-                <p>Active</p>
+                <p>Đang hoạt động</p>
                 <strong>{stats.active}</strong>
               </div>
             </article>
             <article className="branches-stat">
               <div className="branches-stat-icon inactive">○</div>
               <div>
-                <p>Inactive</p>
+                <p>Ngừng hoạt động</p>
                 <strong>{stats.inactive}</strong>
               </div>
             </article>
@@ -231,18 +231,18 @@ function BranchesPage() {
 
           <div className="branches-panel">
             <div className="branches-panel-title">
-              <h2>Branch List</h2>
+              <h2>Danh sách chi nhánh</h2>
             </div>
 
             <table className="branches-table">
               <thead>
                 <tr>
-                  <th>Branch</th>
-                  <th>Code</th>
-                  <th>Address</th>
-                  <th>Phone</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>Chi nhánh</th>
+                  <th>Mã</th>
+                  <th>Địa chỉ</th>
+                  <th>Điện thoại</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -250,8 +250,8 @@ function BranchesPage() {
                   <tr>
                     <td colSpan={6} className="branches-empty">
                       {query
-                        ? 'No branches match your search.'
-                        : 'No branches yet. Click "Add Branch" to create one.'}
+                        ? 'Không tìm thấy chi nhánh phù hợp.'
+                        : 'Chưa có chi nhánh nào. Nhấn "Thêm chi nhánh" để tạo.'}
                     </td>
                   </tr>
                 )}
@@ -271,7 +271,7 @@ function BranchesPage() {
                           branch.status === 'active' ? 'active' : 'inactive'
                         }`}
                       >
-                        {branch.status === 'active' ? 'Active' : 'Inactive'}
+                        {branch.status === 'active' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
                       </span>
                     </td>
                     <td className="branches-actions">
@@ -280,21 +280,21 @@ function BranchesPage() {
                         onClick={() => setViewingBranch(branch)}
                         className="action-link"
                       >
-                        View
+                        Xem
                       </button>
                       <button
                         type="button"
                         onClick={() => openEdit(branch)}
                         className="action-link"
                       >
-                        Edit
+                        Sửa
                       </button>
                       <button
                         type="button"
                         onClick={() => setDeletingId(branch.id)}
                         className="action-link danger"
                       >
-                        Delete
+                        Xóa
                       </button>
                     </td>
                   </tr>
@@ -303,7 +303,7 @@ function BranchesPage() {
             </table>
 
             <div className="branches-pagination">
-              <span>Showing 1–{Math.max(filtered.length, 1)} of {branches.length}</span>
+              <span>Hiển thị 1–{Math.max(filtered.length, 1)} trong {branches.length}</span>
               <div className="branches-pagination-controls">
                 <button type="button" disabled>‹</button>
                 <button type="button" className="page-current">1</button>
@@ -321,51 +321,51 @@ function BranchesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>{editingId ? 'Edit Branch' : 'Add Branch'}</h3>
+            <h3>{editingId ? 'Sửa chi nhánh' : 'Thêm chi nhánh'}</h3>
             {formError && <div className="branches-form-error">{formError}</div>}
             <form onSubmit={handleSubmit}>
               <label>
-                Branch name *
+                Tên chi nhánh *
                 <input
                   value={form.name}
                   onChange={(e) => updateField('name', e.target.value)}
-                  placeholder="e.g. Hà Nội"
+                  placeholder="VD: Hà Nội"
                 />
               </label>
               <label>
-                Branch code *
+                Mã chi nhánh *
                 <input
                   value={form.code}
                   onChange={(e) => updateField('code', e.target.value)}
-                  placeholder="e.g. HN-01"
+                  placeholder="VD: HN-01"
                 />
               </label>
               <label>
-                Address
+                Địa chỉ
                 <input
                   value={form.address}
                   onChange={(e) => updateField('address', e.target.value)}
-                  placeholder="e.g. 123 Trần Hưng Đạo, Hà Nội"
+                  placeholder="VD: 123 Trần Hưng Đạo, Hà Nội"
                 />
               </label>
               <label>
-                Phone
+                Điện thoại
                 <input
                   value={form.phone}
                   onChange={(e) => updateField('phone', e.target.value)}
-                  placeholder="e.g. 024 1234 5678"
+                  placeholder="VD: 024 1234 5678"
                 />
               </label>
               <label>
-                Status
+                Trạng thái
                 <select
                   value={form.status}
                   onChange={(e) =>
                     updateField('status', e.target.value as BranchStatus)
                   }
                 >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="active">Đang hoạt động</option>
+                  <option value="inactive">Ngừng hoạt động</option>
                 </select>
               </label>
               <div className="branches-modal-actions">
@@ -374,10 +374,10 @@ function BranchesPage() {
                   className="btn-ghost"
                   onClick={() => setModalOpen(false)}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button type="submit" className="btn-primary" disabled={saving}>
-                  {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+                  {saving ? 'Đang lưu...' : editingId ? 'Cập nhật' : 'Tạo mới'}
                 </button>
               </div>
             </form>
@@ -396,15 +396,15 @@ function BranchesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Delete Branch</h3>
-            <p>Are you sure you want to delete this branch? This action cannot be undone.</p>
+            <h3>Xóa chi nhánh</h3>
+            <p>Bạn có chắc chắn muốn xóa chi nhánh này không? Hành động này không thể hoàn tác.</p>
             <div className="branches-modal-actions">
               <button
                 type="button"
                 className="btn-ghost"
                 onClick={() => setDeletingId(null)}
               >
-                Cancel
+                Hủy
               </button>
               <button
                 type="button"
@@ -412,7 +412,7 @@ function BranchesPage() {
                 onClick={handleDelete}
                 disabled={saving}
               >
-                {saving ? 'Deleting...' : 'Delete'}
+                {saving ? 'Đang xóa...' : 'Xóa'}
               </button>
             </div>
           </div>
@@ -430,40 +430,40 @@ function BranchesPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Branch Details</h3>
+            <h3>Chi tiết chi nhánh</h3>
             <dl className="branches-view-list">
               <div>
-                <dt>Name</dt>
+                <dt>Tên</dt>
                 <dd>{viewingBranch.name}</dd>
               </div>
               <div>
-                <dt>Code</dt>
+                <dt>Mã</dt>
                 <dd>
                   <span className="branches-code">{viewingBranch.code}</span>
                 </dd>
               </div>
               <div>
-                <dt>Address</dt>
+                <dt>Địa chỉ</dt>
                 <dd>{viewingBranch.address || '—'}</dd>
               </div>
               <div>
-                <dt>Phone</dt>
+                <dt>Điện thoại</dt>
                 <dd>{viewingBranch.phone || '—'}</dd>
               </div>
               <div>
-                <dt>Status</dt>
+                <dt>Trạng thái</dt>
                 <dd>
                   <span
                     className={`branch-status ${
                       viewingBranch.status === 'active' ? 'active' : 'inactive'
                     }`}
                   >
-                    {viewingBranch.status === 'active' ? 'Active' : 'Inactive'}
+                    {viewingBranch.status === 'active' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
                   </span>
                 </dd>
               </div>
               <div>
-                <dt>Created</dt>
+                <dt>Ngày tạo</dt>
                 <dd>
                   {viewingBranch.createdAt
                     ? new Date(viewingBranch.createdAt).toLocaleString('vi-VN')
@@ -477,7 +477,7 @@ function BranchesPage() {
                 className="btn-primary"
                 onClick={() => setViewingBranch(null)}
               >
-                Close
+                Đóng
               </button>
             </div>
           </div>

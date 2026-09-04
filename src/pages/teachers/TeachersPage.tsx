@@ -15,8 +15,8 @@ import './TeachersPage.css';
 const PAGE_SIZE = 10;
 
 const statusLabels: Record<TeacherStatus, string> = {
-  ACTIVE: 'Active',
-  INACTIVE: 'Inactive',
+  ACTIVE: 'Đang hoạt động',
+  INACTIVE: 'Ngừng hoạt động',
 };
 
 function TeachersPage() {
@@ -198,17 +198,17 @@ function TeachersPage() {
 
   return (
     <DashboardLayout
-      activeLabel="Teachers"
-      searchPlaceholder="Tìm kiếm giáo viên, lớp học..."
+      activeLabel="Giáo viên"
+      searchPlaceholder="Tìm kiếm giáo viên..."
     >
       <div className="dashboard-content teachers-content">
         <div className="teachers-heading">
           <div>
-            <h1>Teachers</h1>
-            <small>Manage and organize teachers in your organization</small>
+            <h1>Giáo viên</h1>
+            <small>Quản lý và tổ chức giáo viên trong tổ chức</small>
           </div>
           <button className="teachers-add" type="button" onClick={openCreate}>
-            + Add Teacher
+            + Thêm giáo viên
           </button>
         </div>
 
@@ -220,7 +220,7 @@ function TeachersPage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search teachers..."
+              placeholder="Tìm kiếm giáo viên..."
               aria-label="Tìm kiếm giáo viên"
             />
           </div>
@@ -232,7 +232,7 @@ function TeachersPage() {
             onChange={(e) => setFilterSpec(e.target.value)}
             className="teachers-filter"
           >
-            <option value="">Specialization</option>
+            <option value="">Chuyên môn</option>
             {specOptions.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -244,16 +244,16 @@ function TeachersPage() {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="teachers-filter"
           >
-            <option value="">Status</option>
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
+            <option value="">Trạng thái</option>
+            <option value="ACTIVE">Đang hoạt động</option>
+            <option value="INACTIVE">Ngừng hoạt động</option>
           </select>
           <select
             value={filterBranch}
             onChange={(e) => setFilterBranch(e.target.value)}
             className="teachers-filter"
           >
-            <option value="">Branch</option>
+            <option value="">Chi nhánh</option>
             {branches.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -263,21 +263,21 @@ function TeachersPage() {
         </div>
 
         <div className="teachers-section-head">
-          <h2>Teachers</h2>
-          <span>{filtered.length} teachers</span>
+          <h2>Giáo viên</h2>
+          <span>{filtered.length} giáo viên</span>
         </div>
 
         <div className="teachers-panel">
           <table className="teachers-table">
             <thead>
               <tr>
-                <th>Teacher</th>
-                <th>Code</th>
-                <th>Specialization</th>
-                <th>Branch</th>
-                <th>Classes</th>
-                <th>Status</th>
-                <th className="teachers-th-actions" aria-label="Actions" />
+                <th>Giáo viên</th>
+                <th>Mã</th>
+                <th>Chuyên môn</th>
+                <th>Chi nhánh</th>
+                <th>Lớp học</th>
+                <th>Trạng thái</th>
+                <th className="teachers-th-actions" aria-label="Thao tác" />
               </tr>
             </thead>
             <tbody>
@@ -285,8 +285,8 @@ function TeachersPage() {
                 <tr>
                   <td colSpan={7} className="teachers-empty">
                     {query || filterSpec || filterStatus || filterBranch
-                      ? 'No teachers match your filters.'
-                      : 'No teachers yet. Click "Add Teacher" to create one.'}
+                      ? 'Không tìm thấy giáo viên phù hợp.'
+                      : 'Chưa có giáo viên nào. Nhấn "Thêm giáo viên" để tạo.'}
                   </td>
                 </tr>
               )}
@@ -330,7 +330,7 @@ function TeachersPage() {
                   </td>
                   <td>
                     <span className="teachers-classes-count">
-                      {classesByTeacher.get(t.id)?.length ?? 0} classes
+                      {classesByTeacher.get(t.id)?.length ?? 0} lớp
                     </span>
                   </td>
                   <td>
@@ -339,12 +339,12 @@ function TeachersPage() {
                       className={`teacher-status ${t.status.toLowerCase()}`}
                       onClick={() => handleToggleStatus(t)}
                       disabled={savingStatusId === t.id}
-                      title={`Click để chuyển sang ${
-                        t.status === 'ACTIVE' ? 'Inactive' : 'Active'
+                      title={`Nhấn để chuyển sang ${
+                        t.status === 'ACTIVE' ? 'Ngừng hoạt động' : 'Đang hoạt động'
                       }`}
                     >
                       {savingStatusId === t.id
-                        ? 'Saving...'
+                        ? 'Đang lưu...'
                         : statusLabels[t.status]}
                     </button>
                   </td>
@@ -358,7 +358,7 @@ function TeachersPage() {
                             prev === t.id ? null : t.id,
                           )
                         }
-                        aria-label="Actions"
+                        aria-label="Thao tác"
                       >
                         ⋮
                       </button>
@@ -376,13 +376,13 @@ function TeachersPage() {
                                 navigate(`/teachers/${t.id}`);
                               }}
                             >
-                              View details
+                              Xem chi tiết
                             </button>
                             <button
                               type="button"
                               onClick={() => openEdit(t)}
                             >
-                              Edit teacher
+                              Sửa giáo viên
                             </button>
                             <button
                               type="button"
@@ -391,7 +391,7 @@ function TeachersPage() {
                                 setClassesView(t);
                               }}
                             >
-                              View classes
+                              Xem lớp học
                             </button>
                           </div>
                         </>
@@ -406,8 +406,8 @@ function TeachersPage() {
           {filtered.length > PAGE_SIZE && (
             <div className="teachers-pagination">
               <span>
-                Showing {(safePage - 1) * PAGE_SIZE + 1}–
-                {Math.min(safePage * PAGE_SIZE, filtered.length)} of{' '}
+                Hiển thị {(safePage - 1) * PAGE_SIZE + 1}–
+                {Math.min(safePage * PAGE_SIZE, filtered.length)} trong{' '}
                 {filtered.length}
               </span>
               <div className="teachers-pagination-controls">
@@ -464,7 +464,7 @@ function TeachersPage() {
           >
             <div className="teachers-modal-header">
               <h3>
-                {classesView.user?.fullName ?? 'Teacher'} — Classes
+                {classesView.user?.fullName ?? 'Giáo viên'} — Lớp học
               </h3>
               <button
                 type="button"
@@ -476,7 +476,7 @@ function TeachersPage() {
             </div>
             {teacherClasses.length === 0 ? (
               <div className="teachers-modal-empty">
-                This teacher has no classes yet.
+                Giáo viên chưa có lớp học nào.
               </div>
             ) : (
               <ul className="teachers-classes-list">
@@ -505,7 +505,7 @@ function TeachersPage() {
                 className="btn-primary"
                 onClick={() => setClassesView(null)}
               >
-                Close
+                Đóng
               </button>
             </div>
           </div>
@@ -519,10 +519,10 @@ function TeachersPage() {
             role="dialog"
             aria-modal="true"
           >
-            <h3>Teacher Created</h3>
+            <h3>Đã tạo giáo viên</h3>
             <p>
-              Share this temporary password with the teacher. They can change
-              it after logging in.
+              Hãy chia sẻ mật khẩu tạm thời này với giáo viên. Họ có thể đổi
+              mật khẩu sau khi đăng nhập.
             </p>
             <div className="teachers-password-box">{createdPassword}</div>
             <div className="teachers-modal-actions">
@@ -531,7 +531,7 @@ function TeachersPage() {
                 className="btn-primary"
                 onClick={() => setCreatedPassword(null)}
               >
-                Done
+                Hoàn tất
               </button>
             </div>
           </div>

@@ -39,15 +39,15 @@ function ForgotPasswordPage() {
         <div className="brand-copy">
           <p className="eyebrow">Khôi phục tài khoản</p>
           <h1>
-            Reset your
+            Đặt lại
             <br />
-            password easily.
+            mật khẩu dễ dàng.
           </h1>
           <p>
             Chúng tôi sẽ gửi cho bạn một mã OTP để xác nhận qua email.
           </p>
         </div>
-        <p className="brand-footer">© 2026 EduFlow. Learn without limits.</p>
+        <p className="brand-footer">© 2026 EduFlow. Học không giới hạn.</p>
       </aside>
 
       <section className="form-panel">

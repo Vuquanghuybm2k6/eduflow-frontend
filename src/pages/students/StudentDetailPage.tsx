@@ -8,9 +8,9 @@ import './StudentsPage.css';
 import './StudentDetailPage.css';
 
 const genderLabels: Record<string, string> = {
-  MALE: 'Male',
-  FEMALE: 'Female',
-  OTHER: 'Other',
+  MALE: 'Nam',
+  FEMALE: 'Nữ',
+  OTHER: 'Khác',
 };
 
 function StudentDetailPage() {
@@ -68,34 +68,34 @@ function StudentDetailPage() {
   };
 
   return (
-    <DashboardLayout activeLabel="Students">
+    <DashboardLayout       activeLabel="Học viên">
       <div className="dashboard-content student-detail-content">
         <button
           type="button"
           className="student-back"
           onClick={() => navigate('/students')}
         >
-          ← Back to Students
+          ← Quay lại danh sách học viên
         </button>
 
         {error && <div className="student-detail-error">{error}</div>}
         {loading && (!student || !error) && (
-          <div className="student-detail-loading">Loading...</div>
+          <div className="student-detail-loading">Đang tải...</div>
         )}
 
         {!loading && student && (
           <>
             <div className="student-heading">
               <div>
-                <h1>Student Profile</h1>
-                <small>View and manage student information</small>
+                <h1>Hồ sơ học viên</h1>
+                <small>Xem và quản lý thông tin học viên</small>
               </div>
               <button
                 type="button"
                 className="student-edit-btn"
                 onClick={() => setEditOpen(true)}
               >
-                Edit
+                Sửa
               </button>
             </div>
 
@@ -114,7 +114,7 @@ function StudentDetailPage() {
                   <span
                     className={`student-status ${student.status.toLowerCase()}`}
                   >
-                    {student.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+                    {student.status === 'ACTIVE' ? 'Đang hoạt động' : 'Ngừng hoạt động'}
                   </span>
                 </div>
               </div>
@@ -122,21 +122,21 @@ function StudentDetailPage() {
 
             <div className="student-info-grid">
               <section className="student-info-card">
-                <h3>Personal Information</h3>
+                <h3>Thông tin cá nhân</h3>
                 <div className="student-info-row">
                   <span>Email</span>
                   <strong>{student.user?.email ?? '—'}</strong>
                 </div>
                 <div className="student-info-row">
-                  <span>Phone</span>
+                  <span>Điện thoại</span>
                   <strong>{student.user?.phone ?? '—'}</strong>
                 </div>
               </section>
 
               <section className="student-info-card">
-                <h3>Student Information</h3>
+                <h3>Thông tin học viên</h3>
                 <div className="student-info-row">
-                  <span>Date of birth</span>
+                  <span>Ngày sinh</span>
                   <strong>
                     {student.dateOfBirth
                       ? new Date(student.dateOfBirth)
@@ -146,7 +146,7 @@ function StudentDetailPage() {
                   </strong>
                 </div>
                 <div className="student-info-row">
-                  <span>Gender</span>
+                  <span>Giới tính</span>
                   <strong>
                     {student.gender
                       ? genderLabels[student.gender] ?? student.gender
@@ -154,7 +154,7 @@ function StudentDetailPage() {
                   </strong>
                 </div>
                 <div className="student-info-row">
-                  <span>Branches</span>
+                  <span>Chi nhánh</span>
                   <strong>
                     {(student.branches ?? []).length > 0
                       ? student.branches!.map((b) => b.name).join(', ')
@@ -163,7 +163,7 @@ function StudentDetailPage() {
                 </div>
                 {student.address && (
                   <div className="student-info-row">
-                    <span>Address</span>
+                    <span>Địa chỉ</span>
                     <strong>{student.address}</strong>
                   </div>
                 )}
