@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { classApi, type ClassItem, type ClassStatus } from '../../services/class.service';
+import {
+  classApi,
+  type ClassItem,
+} from '../../services/class.service';
 import './ClassActionsMenu.css';
 
 interface ClassActionsMenuProps {
@@ -29,12 +32,11 @@ function ClassActionsMenu({
     return () => document.removeEventListener('mousedown', handle);
   }, [open]);
 
-  const statusTransitions: Partial<Record<ClassStatus, string[]>> = {
-    UPCOMING: ['ACTIVE', 'CANCELLED'],
-    ACTIVE: ['COMPLETED', 'CANCELLED'],
-  };
-
-  const availableStatuses = statusTransitions[classItem.status] ?? [];
+  const canCancel =
+    classItem.lifecycleStatus === 'UPCOMING' ||
+    classItem.lifecycleStatus === 'ONGOING';
+  const canDeactivate = classItem.status === 'ACTIVE';
+  const canReactivate = classItem.status === 'INACTIVE';
 
   const handleAction = async (action: string) => {
     if (action === 'duplicate') {
@@ -61,22 +63,22 @@ function ClassActionsMenu({
     setError(null);
     try {
       if (confirmAction === 'cancel') {
-        await classApi.update(
-          classItem.id,
-          { status: 'CANCELLED' },
-          organizationId,
-        );
-        onAction('cancel');
-      } else if (confirmAction === 'archive') {
-        await classApi.update(
-          classItem.id,
-          { status: 'COMPLETED' },
-          organizationId,
-        );
-        onAction('archive');
-      } else if (confirmAction === 'delete') {
         await classApi.remove(classItem.id, organizationId);
-        onAction('delete');
+        onAction('cancel');
+      } else if (confirmAction === 'deactivate') {
+        await classApi.update(
+          classItem.id,
+          { status: 'INACTIVE' },
+          organizationId,
+        );
+        onAction('deactivate');
+      } else if (confirmAction === 'reactivate') {
+        await classApi.update(
+          classItem.id,
+          { status: 'ACTIVE' },
+          organizationId,
+        );
+        onAction('reactivate');
       }
       setOpen(false);
       setConfirmAction(null);
@@ -103,24 +105,21 @@ function ClassActionsMenu({
             <button type="button" onClick={() => { handleAction('duplicate'); }}>
               Nhân bản lớp
             </button>
-            {availableStatuses.includes('COMPLETED') && (
-              <button type="button" onClick={() => { handleAction('archive'); }}>
-                Lưu trữ lớp
+            {canDeactivate && (
+              <button type="button" onClick={() => { handleAction('deactivate'); }}>
+                Ngừng hoạt động
               </button>
             )}
-            {availableStatuses.includes('CANCELLED') && (
+            {canReactivate && (
+              <button type="button" onClick={() => { handleAction('reactivate'); }}>
+                Kích hoạt lại
+              </button>
+            )}
+            {canCancel && (
               <button type="button" className="class-actions-danger" onClick={() => { handleAction('cancel'); }}>
                 Hủy lớp
               </button>
             )}
-            <div className="class-actions-divider" />
-            <button
-              type="button"
-              className="class-actions-danger"
-              onClick={() => { handleAction('delete'); }}
-            >
-              Xóa lớp
-            </button>
           </div>
         )}
       </div>
@@ -139,17 +138,17 @@ function ClassActionsMenu({
             <h3>
               {confirmAction === 'cancel'
                 ? 'Hủy lớp này?'
-                : confirmAction === 'archive'
-                  ? 'Lưu trữ lớp này?'
-                  : 'Xóa lớp này?'}
+                : confirmAction === 'deactivate'
+                  ? 'Ngừng hoạt động lớp này?'
+                  : 'Kích hoạt lại lớp này?'}
             </h3>
             <p>
               Bạn có chắc muốn{' '}
               {confirmAction === 'cancel'
                 ? 'hủy'
-                : confirmAction === 'archive'
-                  ? 'lưu trữ'
-                  : 'xóa vĩnh viễn'}{' '}
+                : confirmAction === 'deactivate'
+                  ? 'ngừng hoạt động'
+                  : 'kích hoạt lại'}{' '}
               <strong>"{classItem.name}"</strong>?
             </p>
             {confirmAction === 'cancel' && (
@@ -157,14 +156,14 @@ function ClassActionsMenu({
                 Hành động này sẽ đánh dấu lớp là đã hủy.
               </p>
             )}
-            {confirmAction === 'archive' && (
+            {confirmAction === 'deactivate' && (
               <p className="class-confirm-note">
-                Hành động này sẽ đánh dấu lớp là hoàn thành/lưu trữ.
+                Lớp sẽ không còn được sử dụng trong hệ thống, nhưng lịch sử vẫn được giữ lại.
               </p>
             )}
-            {confirmAction === 'delete' && (
-              <p className="class-confirm-note class-confirm-warn">
-                Hành động này không thể hoàn tác.
+            {confirmAction === 'reactivate' && (
+              <p className="class-confirm-note">
+                Lớp sẽ được sử dụng lại trong hệ thống.
               </p>
             )}
             {error && <div className="drawer-error">{error}</div>}
@@ -174,11 +173,11 @@ function ClassActionsMenu({
                 className="drawer-btn drawer-btn-ghost"
                 onClick={() => { setConfirmAction(null); setError(null); }}
               >
-                {confirmAction === 'delete' ? 'Giữ lớp' : 'Không, quay lại'}
+                Không, quay lại
               </button>
               <button
                 type="button"
-                className={`drawer-btn ${confirmAction === 'delete' ? 'drawer-btn-danger' : 'drawer-btn-primary'}`}
+                className={`drawer-btn ${confirmAction === 'cancel' ? 'drawer-btn-danger' : 'drawer-btn-primary'}`}
                 onClick={executeConfirm}
                 disabled={working}
               >
@@ -186,9 +185,9 @@ function ClassActionsMenu({
                   ? 'Đang xử lý...'
                   : confirmAction === 'cancel'
                     ? 'Có, hủy lớp'
-                    : confirmAction === 'archive'
-                      ? 'Có, lưu trữ'
-                      : 'Có, xóa'}
+                    : confirmAction === 'deactivate'
+                      ? 'Có, ngừng hoạt động'
+                      : 'Có, kích hoạt lại'}
               </button>
             </div>
           </div>

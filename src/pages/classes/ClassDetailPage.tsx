@@ -265,15 +265,17 @@ function ClassDetailPage() {
                 <div className="class-hero-title-row">
                   <h1>{classItem.name}</h1>
                   <span
-                    className={`class-hero-status ${classItem.status.toLowerCase()}`}
+                    className={`class-hero-status ${(classItem.lifecycleStatus ?? '').toLowerCase()}`}
                   >
-                    {classItem.status === 'UPCOMING'
+                    {classItem.lifecycleStatus === 'UPCOMING'
                       ? 'Sắp diễn ra'
-                      : classItem.status === 'ACTIVE'
-                        ? 'Đang hoạt động'
-                        : classItem.status === 'COMPLETED'
+                      : classItem.lifecycleStatus === 'ONGOING'
+                        ? 'Đang diễn ra'
+                        : classItem.lifecycleStatus === 'COMPLETED'
                           ? 'Hoàn thành'
-                          : 'Đã hủy'}
+                          : classItem.lifecycleStatus === 'CANCELLED'
+                            ? 'Đã hủy'
+                            : '—'}
                   </span>
                 </div>
                 <p className="class-hero-sub">

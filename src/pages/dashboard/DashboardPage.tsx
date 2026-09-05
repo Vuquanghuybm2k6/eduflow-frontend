@@ -57,7 +57,10 @@ function DashboardPage() {
 
   const studentCount = students.length || 1248;
   const teacherCount = teachers.length || 86;
-  const classCount = classes.filter((c) => c.status === 'ACTIVE' || c.status === 'UPCOMING').length || 32;
+  const classCount = classes.filter(
+    (c) =>
+      c.lifecycleStatus === 'UPCOMING' || c.lifecycleStatus === 'ONGOING',
+  ).length || 32;
 
   // Mock class schedule matching screenshot 1:1
   const todayClasses = [

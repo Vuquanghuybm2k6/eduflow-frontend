@@ -1,6 +1,12 @@
 import api from './api';
 
-export type ClassStatus = 'UPCOMING' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED';
+export type ClassStatus = 'ACTIVE' | 'INACTIVE';
+
+export type ClassLifecycleStatus =
+  | 'UPCOMING'
+  | 'ONGOING'
+  | 'COMPLETED'
+  | 'CANCELLED';
 
 export interface ClassItem {
   id: string;
@@ -14,6 +20,7 @@ export interface ClassItem {
   endDate: string;
   capacity: number;
   status: ClassStatus;
+  lifecycleStatus: ClassLifecycleStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -27,7 +34,6 @@ export interface CreateClassInput {
   startDate: string;
   endDate: string;
   capacity: number;
-  status?: ClassStatus;
 }
 
 export type UpdateClassInput = Partial<CreateClassInput> & { status?: ClassStatus };

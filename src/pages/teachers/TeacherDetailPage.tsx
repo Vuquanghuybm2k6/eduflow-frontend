@@ -242,9 +242,9 @@ function TeacherDetailPage() {
                           <td>{c.capacity}</td>
                           <td>
                             <span
-                              className={`cls-status ${c.status.toLowerCase()}`}
+                              className={`cls-status ${(c.lifecycleStatus ?? '').toLowerCase()}`}
                             >
-                              {c.status}
+                              {c.lifecycleStatus ?? '—'}
                             </span>
                           </td>
                         </tr>
@@ -295,8 +295,8 @@ function TeacherDetailPage() {
                       <div className="teachers-classes-meta">
                         <span>{courseMap.get(c.courseId) ?? '—'}</span>
                         <span>{branchMap.get(c.branchId) ?? '—'}</span>
-                        <span className={`cls-status ${c.status.toLowerCase()}`}>
-                          {c.status}
+                        <span className={`cls-status ${(c.lifecycleStatus ?? '').toLowerCase()}`}>
+                          {c.lifecycleStatus ?? '—'}
                         </span>
                       </div>
                     </li>

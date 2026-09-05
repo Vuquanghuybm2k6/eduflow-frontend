@@ -493,9 +493,9 @@ function TeachersPage() {
                       <span>{courseMap.get(c.courseId) ?? '—'}</span>
                       <span>{branchMap.get(c.branchId) ?? '—'}</span>
                       <span
-                        className={`cls-status ${c.status.toLowerCase()}`}
+                        className={`cls-status ${(c.lifecycleStatus ?? '').toLowerCase()}`}
                       >
-                        {c.status}
+                        {c.lifecycleStatus ?? '—'}
                       </span>
                     </div>
                   </li>

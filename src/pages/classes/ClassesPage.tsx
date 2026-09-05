@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   classApi,
   type ClassItem,
-  type ClassStatus,
+  type ClassLifecycleStatus,
   type CreateClassInput,
 } from '../../services/class.service';
 import { branchApi, type Branch } from '../../services/branch.service';
@@ -14,9 +14,9 @@ import './ClassesPage.css';
 
 const PAGE_SIZE = 10;
 
-const statusLabels: Record<ClassStatus, string> = {
+const statusLabels: Record<ClassLifecycleStatus, string> = {
   UPCOMING: 'Sắp diễn ra',
-  ACTIVE: 'Đang hoạt động',
+  ONGOING: 'Đang diễn ra',
   COMPLETED: 'Hoàn thành',
   CANCELLED: 'Đã hủy',
 };
@@ -115,7 +115,8 @@ function ClassesPage() {
     }
     if (filterBranch) result = result.filter((c) => c.branchId === filterBranch);
     if (filterCourse) result = result.filter((c) => c.courseId === filterCourse);
-    if (filterStatus) result = result.filter((c) => c.status === filterStatus);
+    if (filterStatus)
+      result = result.filter((c) => c.lifecycleStatus === filterStatus);
     return result;
   }, [classes, query, filterBranch, filterCourse, filterStatus]);
 
@@ -251,7 +252,8 @@ function ClassesPage() {
   const getTeacherName = (id: string | null) =>
     id ? (teacherMap.get(id)?.user?.fullName ?? '—') : '—';
 
-  const statusClass = (s: ClassStatus) => `cls-status ${s.toLowerCase()}`;
+  const statusClass = (s?: ClassLifecycleStatus) =>
+    `cls-status ${(s?.toLowerCase() ?? 'unknown')}`;
 
   return (
     <DashboardLayout
@@ -346,8 +348,8 @@ function ClassesPage() {
                   <td>{getTeacherName(cls.teacherId)}</td>
                   <td>{cls.capacity}</td>
                   <td>
-                    <span className={statusClass(cls.status)}>
-                      {statusLabels[cls.status]}
+                    <span className={statusClass(cls.lifecycleStatus)}>
+                      {statusLabels[cls.lifecycleStatus] ?? '—'}
                     </span>
                   </td>
                   <td className="classes-actions">
